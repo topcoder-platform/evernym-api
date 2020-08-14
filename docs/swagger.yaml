@@ -1,0 +1,829 @@
+openapi: 3.0.2
+info:
+  title: universal-identity-api
+  version: 1.0.0
+  description: API providing basic operations in verity platform
+paths:
+  /relationships:
+    get:
+      operationId: searchRelationships
+      tags:
+      - Relationship
+      description: Search all relationships.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchRelationshipsResponseBody'
+          headers:
+            X-Next-Page:
+              $ref: '#/components/headers/X-Next-Page'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Prev-Page:
+              $ref: '#/components/headers/X-Prev-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+            X-Total-Pages:
+              $ref: '#/components/headers/X-Total-Pages'
+            Link:
+              $ref: '#/components/headers/X-Total-Pages'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createRelationship
+      tags:
+      - Relationship
+      description: Create a relationship.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createRelationshipRequestBody'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createRelationshipResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /relationships/{id}:
+    get:
+      operationId: getRelationship
+      tags:
+      - Relationship
+      description: Find a relationship by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getRelationshipResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteRelationship
+      tags:
+      - Relationship
+      description: Delete a relationship by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /connections:
+    get:
+      operationId: searchConnections
+      tags:
+      - Connection
+      description: Search all connections.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchConnectionsResponseBody'
+          headers:
+            X-Next-Page:
+              $ref: '#/components/headers/X-Next-Page'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Prev-Page:
+              $ref: '#/components/headers/X-Prev-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+            X-Total-Pages:
+              $ref: '#/components/headers/X-Total-Pages'
+            Link:
+              $ref: '#/components/headers/X-Total-Pages'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createConnection
+      tags:
+      - Connection
+      description: Create a connection.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createConnectionResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /connections/{id}:
+    get:
+      operationId: getConnection
+      tags:
+      - Connection
+      description: Find a connection by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getConnectionResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteConnection
+      tags:
+      - Connection
+      description: Delete a connection by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /schemas:
+    get:
+      operationId: searchSchemas
+      tags:
+      - Schema
+      description: Search all schemas.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchSchemasResponseBody'
+          headers:
+            X-Next-Page:
+              $ref: '#/components/headers/X-Next-Page'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Prev-Page:
+              $ref: '#/components/headers/X-Prev-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+            X-Total-Pages:
+              $ref: '#/components/headers/X-Total-Pages'
+            Link:
+              $ref: '#/components/headers/X-Total-Pages'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createSchema
+      tags:
+      - Schema
+      description: Create a schema.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createSchemaRequestBody'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createSchemaResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+  /schemas/{id}:
+    get:
+      operationId: getSchema
+      tags:
+      - Schema
+      description: Find a schema by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getSchemaResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteSchema
+      tags:
+      - Schema
+      description: Delete a schema by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /credDefinitions:
+    get:
+      operationId: searchCredDefinitions
+      tags:
+      - CredDefinition
+      description: Search all credDefinitions.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchCredDefinitionsResponseBody'
+          headers:
+            X-Next-Page:
+              $ref: '#/components/headers/X-Next-Page'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Prev-Page:
+              $ref: '#/components/headers/X-Prev-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+            X-Total-Pages:
+              $ref: '#/components/headers/X-Total-Pages'
+            Link:
+              $ref: '#/components/headers/X-Total-Pages'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createCredDefinition
+      tags:
+      - CredDefinition
+      description: Create a credDefinition.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCredDefinitionRequestBody'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createCredDefinitionResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+  /credDefinitions/{id}:
+    get:
+      operationId: getCredDefinition
+      tags:
+      - CredDefinition
+      description: Find a credDefinition by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getCredDefinitionResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteCredDefinition
+      tags:
+      - CredDefinition
+      description: Delete a credDefinition by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /credentials:
+    get:
+      operationId: searchCredentials
+      tags:
+      - Credential
+      description: Search all credentials.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchCredentialsResponseBody'
+          headers:
+            X-Next-Page:
+              $ref: '#/components/headers/X-Next-Page'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Prev-Page:
+              $ref: '#/components/headers/X-Prev-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+            X-Total-Pages:
+              $ref: '#/components/headers/X-Total-Pages'
+            Link:
+              $ref: '#/components/headers/X-Total-Pages'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createCredential
+      tags:
+      - Credential
+      description: Create a credential.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCredentialRequestBody'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createCredentialResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /credentials/{id}:
+    get:
+      operationId: getCredential
+      tags:
+      - Credential
+      description: Find a credential by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getCredentialResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteCredential
+      tags:
+      - Credential
+      description: Delete a credential by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /verity/webook:
+    post:
+      operationId: handleMessage
+      tags:
+      - Verity
+      description: To be a verity webook endpoint.
+      requestBody:
+        content:
+          application/ssi-agent-wire:
+            schema:
+              example: "{\n  \"protected\": \"eyJlbmMiOiJ4Y2hhY2hhMjBwb2x5MTMwNV9pZXRmIiwidHlwIjoiSldNLzEuMCIsImFsZyI6IkF1dGhjcnlwdCIsInJlY2lwaWVudHMiOlt7ImVuY3J5cHRlZF9rZXkiOiIxbzdaMUMzT21QYTIwWXpLUEloNU5JODU2T1VFWlB0cTRuWGF6bTdhZnViRFo4X3VmdTQ1OS1mMVFybVRqcHBjIiwiaGVhZGVyIjp7ImtpZCI6IjI5Tmd0alA2eWo4aUtwblVZUzNwVlZYUkw2NEQ0eTY2TFhaV1dKS1JNWU1mIiwiaXYiOiJvZXMzaXI1LW52TUFjODlBZ1hsWUFlaGRCMmtmVUQwNiIsInNlbmRlciI6InlPRzVwQjNvUHo3anFEUVM4QnlXcXczX2ZvQ2sxbDc1SlMtT1VRd2Q1d2dCZ2ZjTXdPOHMwdWEtM1ZTbUJGZ2p3SjE4OHNSN00yN1cyb2lFMk1URUJnLTdITGFBMnpCb0dUZkktT1hOTmR4QkJLRWU2S3dJS0dNb2hyaz0ifX1dfQ==\"\
+                ,\n  \"iv\": \"SiOeLmpkcsta0JIX\",\n  \"ciphertext\": \"x1M8sxHx8c2t37tYbH5zY-M1U9CY18G7bEx2qd4e72ZizQIc3RLwM2JDdkLp6KgS2r9pmWn3QqcX8yAHQhi-ZQZzl4pBSsOM3p_BTgYcJNOnjwmjg57cuAJ2LHf1t11isbkmi7eqjzeyHzKBMqRCoRlR4Xyg4x7AsjJqXhH9eQjI-2fZlK8Y6HeXVLgTFmP3SjleyQJJ1l6WES6Yy-MAVdXj19JDfNJyavb1vGMtvqMjJ1A03_GR5XdCdF_Fr6BI_BwHKPJL4Gk4guNUvWlf21pmvjDOPPNn-oh5OMbWxT8ORuRHeaHU8FQmaEiupKG6BtudatoFtSJEki9uzEefhl4-ktEbNsJ3fQKJ5t5HjgAwQnD8TbCrzcf_70RIGuqT\"\
+                ,\n  \"tag\": \"iGm9vyicIN3ckKrjIXptfg==\"\n}\n"
+      responses:
+        '200':
+          description: success
+  /verity/requestProof:
+    post:
+      operationId: requestProof
+      tags:
+      - Verity
+      description: Request proof from Connect.Me.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestProofRequestBody'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              example: "{\n  \"requested_presentation\": {\n    \"identifiers\": [\n\
+                \      {\n        \"cred_def_id\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\"\
+                ,\n        \"schema_id\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\"\
+                \n      }\n    ],\n    \"predicates\": {},\n    \"revealed_attrs\"\
+                : {\n      \"degree\": {\n        \"identifier_index\": 0,\n     \
+                \   \"value\": \"Bachelors\"\n      },\n      \"name\": {\n      \
+                \  \"identifier_index\": 0,\n        \"value\": \"John\"\n      }\n\
+                \    },\n    \"self_attested_attrs\": {},\n    \"unrevealed_attrs\"\
+                : {}\n  },\n  \"verification_result\": \"ProofValidated\"\n}\n"
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    errorModel:
+      type: object
+      properties:
+        message:
+          type: string
+          description: the error message
+    searchRelationshipsResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/Relationship'
+    getRelationshipResponseBody:
+      $ref: '#/components/schemas/Relationship'
+    createRelationshipResponseBody:
+      $ref: '#/components/schemas/Relationship'
+    searchConnectionsResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/Connection'
+    getConnectionResponseBody:
+      $ref: '#/components/schemas/Connection'
+    createConnectionResponseBody:
+      $ref: '#/components/schemas/Connection'
+    searchSchemasResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/Schema'
+    getSchemaResponseBody:
+      $ref: '#/components/schemas/Schema'
+    createSchemaResponseBody:
+      $ref: '#/components/schemas/Schema'
+    searchCredDefinitionsResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/CredDefinition'
+    getCredDefinitionResponseBody:
+      $ref: '#/components/schemas/CredDefinition'
+    createCredDefinitionResponseBody:
+      $ref: '#/components/schemas/CredDefinition'
+    searchCredentialsResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/Credential'
+    getCredentialResponseBody:
+      $ref: '#/components/schemas/Credential'
+    createCredentialResponseBody:
+      $ref: '#/components/schemas/Credential'
+    createRelationshipRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: rel01
+    createSchemaRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: schema02
+        version:
+          type: string
+          example: '0.2'
+        attrs:
+          type: array
+          example:
+          - name
+          - degree
+          items:
+            type: string
+    createCredDefinitionRequestBody:
+      type: object
+      properties:
+        schemaId:
+          type: string
+          example: BThsiu7s8BMMvEonohm5uD:2:schema02:0.2
+        name:
+          type: string
+          example: definition01
+        tag:
+          type: string
+          example: latest
+    createCredentialRequestBody:
+      type: object
+      properties:
+        relDID:
+          type: string
+          example: CNJMAUh5xf8AHEqxeMnQcR
+        definitionId:
+          type: string
+          example: BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest
+        credentialData:
+          type: object
+          example:
+            name: John
+            degree: Bachelors
+        comment:
+          type: string
+          example: comment
+    requestProofRequestBody:
+      type: object
+      properties:
+        relDID:
+          type: string
+          example: CNJMAUh5xf8AHEqxeMnQcR
+        name:
+          type: string
+          example: proof01
+        attrs:
+          type: array
+          example:
+          - name
+          - degree
+          items:
+            type: string
+    Relationship:
+      type: object
+      properties:
+        relDID:
+          type: string
+          example: CNJMAUh5xf8AHEqxeMnQcR
+        inviteURL:
+          type: string
+          example: http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiXSwicm91dGluZ0tleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly93d3cudG9wY29kZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE2LzAxL3RvcGNvZGVyLWxvZ28ucG5nIiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6IjZlOWM1YjA0LWZkNWQtNDIyYi1hZDhlLTFiOGY4YjU5M2I3MyJ9
+        name:
+          type: string
+          example: rel01
+        id:
+          type: string
+          example: 5f328e7ebab4fd738edb6b6d
+        createdAt:
+          type: string
+          format: date-time
+    Connection:
+      type: object
+      properties:
+        connDID:
+          type: string
+          example: S8tYPwqVQQ8ND1hFmhVqfB
+        relDID:
+          type: string
+          example: CNJMAUh5xf8AHEqxeMnQcR
+        id:
+          type: string
+          example: 5f32a299a15b90434b97ae3e
+        createdAt:
+          type: string
+          format: date-time
+    Schema:
+      type: object
+      properties:
+        schemaId:
+          type: string
+          example: BThsiu7s8BMMvEonohm5uD:2:schema02:0.2
+        name:
+          type: string
+          example: schema02
+        version:
+          type: string
+          example: '0.2'
+        id:
+          type: string
+          example: 5f32a539328e72a59148a31c
+        createdAt:
+          type: string
+          format: date-time
+    CredDefinition:
+      type: object
+      properties:
+        definitionId:
+          type: string
+          example: BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest
+        schemaId:
+          type: string
+          example: BThsiu7s8BMMvEonohm5uD:2:schema02:0.2
+        name:
+          type: string
+          example: definition01
+        tag:
+          type: string
+          example: latest
+        id:
+          type: string
+          example: 5f32aab2765e7a12484311c0
+        createdAt:
+          type: string
+          format: date-time
+    Credential:
+      type: object
+      properties:
+        relDID:
+          type: string
+          example: CNJMAUh5xf8AHEqxeMnQcR
+        definitionId:
+          type: string
+          example: BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest
+        credentialData:
+          type: object
+          example:
+            name: John
+            degree: Bachelors
+        comment:
+          type: string
+          example: comment
+        id:
+          type: string
+          example: 5f32abda765e7a12484311c1
+        createdAt:
+          type: string
+          format: date-time
+  parameters:
+    id:
+      name: id
+      in: path
+      description: object Id
+      required: true
+      schema:
+        type: string
+        example: 5f32a539328e72a59148a31c
+    page:
+      name: page
+      in: query
+      description: The page number.
+      required: false
+      schema:
+        type: integer
+        default: 1
+    perPage:
+      name: perPage
+      in: query
+      description: The number of items to list per page.
+      required: false
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+  headers:
+    X-Next-Page:
+      schema:
+        type: integer
+      description: The index of the next page
+    X-Page:
+      schema:
+        type: integer
+      description: The index of the current page (starting at 1)
+    X-Per-Page:
+      schema:
+        type: integer
+      description: The number of items to list per page
+    X-Prev-Page:
+      schema:
+        type: integer
+      description: The index of the previous page
+    X-Total:
+      schema:
+        type: integer
+      description: The total number of items
+    X-Total-Pages:
+      schema:
+        type: integer
+      description: The total number of pages
+    Link:
+      schema:
+        type: string
+      description: Pagination link header.
+  responses:
+    BadRequestError:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+    NotFoundError:
+      description: resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+    ConflictError:
+      description: target already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+    NoContent:
+      description: no content
+    InternalServerError:
+      description: internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
