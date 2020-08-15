@@ -45,7 +45,7 @@ async function createCredential (data) {
   if (!relationship) {
     throw new errors.NotFoundError(`relationship with relDID ${data.relDID} not found`)
   }
-  const credDefinition = await models.CredDefinition.findOne({ credDefinitionId: data.definitionId })
+  const credDefinition = await models.CredDefinition.findOne({ definitionId: data.definitionId })
   if (!credDefinition) {
     throw new errors.NotFoundError(`credDefinition with definitionId ${data.definitionId} not found`)
   }
