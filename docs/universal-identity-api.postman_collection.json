@@ -726,7 +726,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "<string>",
+											"value": "5f374bf90e998b1d7c893229",
 											"description": "(Required) object Id"
 										}
 									]
@@ -1249,7 +1249,17 @@
 					"name": "create Connection",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"relDID\": \"QZ8JhKK29WPFGFkZx5ee4w\"\n}"
+						},
 						"url": {
 							"raw": "{{baseUrl}}/connections",
 							"host": [
@@ -1929,7 +1939,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"schema02\",\n  \"version\": \"0.2\",\n  \"attrs\": [\n    \"name\",\n    \"degree\"\n  ]\n}"
+							"raw": "{\n  \"name\": \"schema03\",\n  \"version\": \"0.2\",\n  \"attrs\": [\n    \"name\",\n    \"degree\"\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/schemas",
@@ -2657,7 +2667,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"schemaId\": \"7hW8w9NNUZ5p523bCcFPGt:2:schema02:0.2\",\n  \"name\": \"definition01\",\n  \"tag\": \"latest\"\n}\n"
+							"raw": "{\n  \"schemaId\": \"9YLRtP7FJgWifeANJ5uKmu:2:schema03:0.2\",\n  \"name\": \"definition01\",\n  \"tag\": \"latest\"\n}\n"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/credDefinitions",
@@ -2854,7 +2864,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "<string>",
+											"value": "5f3750aa0e998b1d7c893230",
 											"description": "(Required) object Id"
 										}
 									]
@@ -3385,7 +3395,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"relDID\": \"6bTxtm7oxFJnMR1onvRQqm\",\n  \"definitionId\": \"7hW8w9NNUZ5p523bCcFPGt:3:CL:132864:latest\",\n  \"credentialData\": {\n    \"name\": \"John\",\n    \"degree\": \"Bachelors\"\n  },\n  \"comment\": \"comment\"\n}"
+							"raw": "{\n  \"relDID\": \"QZ8JhKK29WPFGFkZx5ee4w\",\n  \"definitionId\": \"9YLRtP7FJgWifeANJ5uKmu:3:CL:134293:latest\",\n  \"credentialData\": {\n    \"name\": \"John\",\n    \"degree\": \"Bachelors\"\n  },\n  \"comment\": \"comment\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/credentials",
@@ -3532,6 +3542,173 @@
 			"name": "verity",
 			"item": [
 				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "get presentationResult",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/verity/presentationResults/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"presentationResults",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5f37518c0e998b1d7c893231"
+										}
+									]
+								},
+								"description": "Request proof from Connect.Me."
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/verity/requestProof",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"verity",
+												"requestProof"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "\"{\\n  \\\"requested_presentation\\\": {\\n    \\\"identifiers\\\": [\\n      {\\n        \\\"cred_def_id\\\": \\\"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\\\",\\n        \\\"schema_id\\\": \\\"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\\\"\\n      }\\n    ],\\n    \\\"predicates\\\": {},\\n    \\\"revealed_attrs\\\": {\\n      \\\"degree\\\": {\\n        \\\"identifier_index\\\": 0,\\n        \\\"value\\\": \\\"Bachelors\\\"\\n      },\\n      \\\"name\\\": {\\n        \\\"identifier_index\\\": 0,\\n        \\\"value\\\": \\\"John\\\"\\n      }\\n    },\\n    \\\"self_attested_attrs\\\": {},\\n    \\\"unrevealed_attrs\\\": {}\\n  },\\n  \\\"verification_result\\\": \\\"ProofValidated\\\"\\n}\\n\""
+								},
+								{
+									"name": "resource not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/verity/requestProof",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"verity",
+												"requestProof"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"message\": \"paria\"\n}"
+								},
+								{
+									"name": "internal server error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/verity/requestProof",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"verity",
+												"requestProof"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"message\": \"paria\"\n}"
+								},
+								{
+									"name": "bad request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/verity/requestProof",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"verity",
+												"requestProof"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"message\": \"paria\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "request Proof",
 					"request": {
 						"method": "POST",
@@ -3543,7 +3720,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"relDID\": \"6bTxtm7oxFJnMR1onvRQqm\",\n  \"name\": \"proof01\",\n  \"attrs\": [\n    \"name\",\n    \"degree\"\n  ]\n}"
+							"raw": "{\n  \"relDID\": \"QZ8JhKK29WPFGFkZx5ee4w\",\n  \"name\": \"proof01\",\n  \"attrs\": [\n    \"name\",\n    \"degree\"\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/verity/requestProof",

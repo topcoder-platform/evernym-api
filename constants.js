@@ -17,5 +17,20 @@ module.exports = {
   },
   MessageType: {
     ProblemReport: 'problem-report'
+  },
+  Status: {
+    Connection: {
+      Pending: 'pending',
+      Active: 'active'
+    },
+    Credential: {
+      Pending: 'pending',
+      Offered: 'offered',
+      Accepted: 'accepted'
+    },
+    PresentationResult: {
+      Pending: 'pending',
+      Ready: 'ready'
+    }
   }
 }

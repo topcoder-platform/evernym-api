@@ -28,7 +28,20 @@ async function requestProof (req, res) {
   res.status(200).send(data)
 }
 
+/**
+ * Return presentation result.
+ *
+ * @param {Object} req the request object
+ * @param {Object} res the response object
+ * @returns {undefined}
+ */
+async function getPresentationResult (req, res) {
+  const data = await VerityService.getPresentationResult(req.params.id)
+  res.status(200).send(data)
+}
+
 module.exports = {
   handleMessage,
-  requestProof
+  requestProof,
+  getPresentationResult
 }

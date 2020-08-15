@@ -31,10 +31,10 @@ Write down the URL. It will be used in `VERITY_WEBHOOK_ENDPOINT_URL`.
 - Forward the API via ngrok(see [Ngrok Setup](#ngrok-setup)).
 - Configure `VERITY_PROVISION_TOKEN` and `VERITY_WEBHOOK_ENDPOINT_URL`
 
-``` bash
-export VERITY_PROVISION_TOKEN=<your provision token>
-export VERITY_WEBHOOK_ENDPOINT_URL=<your ngrok url>/verity/webhook
-```
+  ``` bash
+  export VERITY_PROVISION_TOKEN=<your provision token>
+  export VERITY_WEBHOOK_ENDPOINT_URL=<your ngrok url>
+  ```
 
 - Start the app: `npm start`
 

@@ -41,8 +41,21 @@ searchCredentials.schema = {
  * @returns {Object} the operation result
  */
 async function createCredential (data) {
-  await VerityService.issueCredential(data.relDID, data.definitionId, data.credentialData, data.comment)
-  const result = await models.Credential.create(data)
+  const relationship = await models.Relationship.findOne({ relDID: data.relDID })
+  if (!relationship) {
+    throw new errors.NotFoundError(`relationship with relDID ${data.relDID} not found`)
+  }
+  const credDefinition = await models.CredDefinition.findOne({ definitionId: data.definitionId })
+  if (!credDefinition) {
+    throw new errors.NotFoundError(`credDefinition with definitionId ${data.definitionId} not found`)
+  }
+  const { threadId } = await VerityService.issueCredential(
+    data.relDID,
+    data.definitionId,
+    data.credentialData,
+    data.comment
+  )
+  const result = await models.Credential.create({ ...data, threadId })
   return result.transform()
 }
 

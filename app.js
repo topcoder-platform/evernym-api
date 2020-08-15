@@ -30,6 +30,11 @@ app.use((err, req, res, next) => {
     res.status(400).sendMessage(err.details[0].message)
     return
   }
+  if (err.name === 'CastError' && err.kind === 'ObjectId') {
+    console.log(err)
+    res.status(400).sendMessage(err.message)
+    return
+  }
   // handle errors with status code
   for (const propertyName of ['statusCode', 'httpStatus']) {
     if (err[propertyName]) {
@@ -43,7 +48,12 @@ app.use((err, req, res, next) => {
 
 app.listen(config.PORT, () => {
   console.log(`APP is listening on ${config.PORT}`)
-  VerityService.init().catch(() => {
+  const init = async () => {
+    await VerityService.init()
+    VerityService.initMessageHandlers()
+  }
+  init().catch((err) => {
+    logger.logFullError(err)
     process.exit(1)
   })
 })
