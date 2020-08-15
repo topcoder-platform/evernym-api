@@ -143,6 +143,11 @@ paths:
       tags:
       - Connection
       description: Create a connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createConnectionRequestBody'
       responses:
         '200':
           description: success
@@ -535,6 +540,27 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /verity/presentationResults/{id}:
+    get:
+      operationId: getPresentationResult
+      tags:
+      - Verity
+      description: Find a presentationResult by id.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresentationResult'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
     errorModel:
@@ -589,6 +615,12 @@ components:
         name:
           type: string
           example: rel01
+    createConnectionRequestBody:
+      type: object
+      properties:
+        relDID:
+          type: string
+          example: QZ8JhKK29WPFGFkZx5ee4w
     createSchemaRequestBody:
       type: object
       properties:
@@ -610,7 +642,7 @@ components:
       properties:
         schemaId:
           type: string
-          example: BThsiu7s8BMMvEonohm5uD:2:schema02:0.2
+          example: 9YLRtP7FJgWifeANJ5uKmu:2:schema02:0.2
         name:
           type: string
           example: definition01
@@ -622,10 +654,10 @@ components:
       properties:
         relDID:
           type: string
-          example: CNJMAUh5xf8AHEqxeMnQcR
+          example: hnf5SaX53BENeH2GwoAjB
         definitionId:
           type: string
-          example: BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest
+          example: 9YLRtP7FJgWifeANJ5uKmu:3:CL:134087:latest
         credentialData:
           type: object
           example:
@@ -639,7 +671,7 @@ components:
       properties:
         relDID:
           type: string
-          example: CNJMAUh5xf8AHEqxeMnQcR
+          example: hnf5SaX53BENeH2GwoAjB
         name:
           type: string
           example: proof01
@@ -671,18 +703,21 @@ components:
     Connection:
       type: object
       properties:
-        connDID:
+        status:
           type: string
-          example: S8tYPwqVQQ8ND1hFmhVqfB
+          example: pending
         relDID:
           type: string
-          example: CNJMAUh5xf8AHEqxeMnQcR
-        id:
-          type: string
-          example: 5f32a299a15b90434b97ae3e
+          example: QZ8JhKK29WPFGFkZx5ee4w
         createdAt:
           type: string
           format: date-time
+        updatedAt:
+          type: string
+          example: '2020-08-15T02:44:09.800Z'
+        id:
+          type: string
+          example: 5f374bf90e998b1d7c893229
     Schema:
       type: object
       properties:
@@ -725,12 +760,15 @@ components:
     Credential:
       type: object
       properties:
+        status:
+          type: string
+          example: pending
         relDID:
           type: string
-          example: CNJMAUh5xf8AHEqxeMnQcR
+          example: 6bTxtm7oxFJnMR1onvRQqm
         definitionId:
           type: string
-          example: BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest
+          example: 7hW8w9NNUZ5p523bCcFPGt:3:CL:132864:latest
         credentialData:
           type: object
           example:
@@ -739,12 +777,64 @@ components:
         comment:
           type: string
           example: comment
-        id:
+        threadId:
           type: string
-          example: 5f32abda765e7a12484311c1
+          example: 84aad637-4c62-458a-913a-c9857a1978f3
         createdAt:
           type: string
           format: date-time
+        updatedAt:
+          type: string
+          example: '2020-08-15T02:56:04.447Z'
+        id:
+          type: string
+          example: 5f374ec40e998b1d7c89322a
+    PresentationResult:
+      type: object
+      properties:
+        attrs:
+          type: array
+          example:
+          - name
+          - degree
+          items:
+            type: string
+        status:
+          type: string
+          example: ready
+        relDID:
+          type: string
+          example: QZ8JhKK29WPFGFkZx5ee4w
+        name:
+          type: string
+          example: proof01
+        threadId:
+          type: string
+          example: 708c7604-d51b-4a77-b528-5e805b11a759
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          example: '2020-08-15T03:11:37.912Z'
+        data:
+          type: object
+          example:
+            verification_result: ProofValidated
+            requested_presentation:
+              revealed_attrs:
+                name:
+                  identifier_index: 0
+                  value: John
+                degree:
+                  identifier_index: 0
+                  value: Bachelors
+              identifiers:
+              - schema_id: 9YLRtP7FJgWifeANJ5uKmu:2:schema03:0.2
+                cred_def_id: 9YLRtP7FJgWifeANJ5uKmu:3:CL:134293:latest
+        id:
+          type: string
+          example: 5f37518c0e998b1d7c893231
   parameters:
     id:
       name: id
