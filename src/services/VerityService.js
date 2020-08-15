@@ -8,6 +8,7 @@ const config = require('config')
 const Joi = require('@hapi/joi')
 const fs = require('fs')
 const _ = require('lodash')
+const models = require('../models')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
 const constants = require('../../constants')
@@ -63,7 +64,7 @@ async function init () {
   }
   // update webhook endpoint
   if (config.VERITY_WEBHOOK_ENDPOINT_URL && config.VERITY_WEBHOOK_ENDPOINT_URL !== context.endpointUrl) {
-    context.endpointUrl = config.VERITY_WEBHOOK_ENDPOINT_URL
+    context.endpointUrl = `${config.VERITY_WEBHOOK_ENDPOINT_URL}/verity/webhook`
     await new sdk.protocols.UpdateEndpoint().update(context)
     logger.info('webhook endpoint updated')
     saveContext(context)
@@ -123,6 +124,104 @@ async function init () {
 }
 
 /**
+ * Initilize handlers that deal with messages from webhook.
+ *
+ * @returns {undefined}
+ */
+function initMessageHandlers () {
+  handleConnections()
+  handleIssuingCredential()
+  handlePresentationResult()
+}
+
+/**
+ * Intialize connection handler.
+ *
+ * @returns {undefined}
+ */
+function handleConnections () {
+  const connecting = new sdk.protocols.v1_0.Connecting()
+  handlers.addHandler(connecting.msgFamily, connecting.msgFamilyVersion, async (msgName, message) => {
+    logger.debug(`[handleConnections] msgName: ${msgName}, message: ${JSON.stringify(message)}`)
+    if (msgName === constants.MessageType.ProblemReport) {
+      logger.logFullError(errorFromMessage(message))
+      return
+    }
+    if (msgName !== connecting.msgNames.REQUEST_RECEIVED) {
+      return
+    }
+    const connection = await models.Connection.findOne({ relDID: message.myDID })
+    if (!connection) {
+      logger.logFullError(`[handleConnections] Connection with relDID ${message.myDID} not found`)
+      return
+    }
+    connection.status = constants.Status.Connection.Active
+    await connection.save()
+  })
+}
+
+/**
+ * Intialize issuing credential handler.
+ *
+ * @returns {undefined}
+ */
+function handleIssuingCredential () {
+  const issue = new sdk.protocols.v1_0.IssueCredential()
+  handlers.addHandler(issue.msgFamily, issue.msgFamilyVersion, async (msgName, message) => {
+    logger.debug(`[handleIssuingCredential] msgName: ${msgName}, message: ${JSON.stringify(message)}`)
+    if (msgName === constants.MessageType.ProblemReport) {
+      logger.logFullError(errorFromMessage(message))
+      return
+    }
+    const threadId = message['~thread'].thid
+    const credential = await models.Credential.findOne({ threadId })
+    if (!credential) {
+      logger.logFullError(`[handleIssuingCredential] Credential with threadId ${threadId} not found`)
+      return
+    }
+    // handle 'sent` message when the offer is sent
+    if (_.get(message, 'msg["offers~attach"]')) {
+      credential.status = constants.Status.Credential.Offered
+      await credential.save()
+      logger.info(`[handleIssuingCredential] the status of Credential ${credential._id} changed to ${credential.status}`)
+      return
+    }
+    // handle 'sent` message when the offer for credential is accepted and credential sent
+    if (_.get(message, 'msg["credentials~attach"]')) {
+      credential.status = constants.Status.Credential.Accepted
+      await credential.save()
+      logger.info(`[handleIssuingCredential] the status of Credential ${credential._id} changed to ${credential.status}`)
+      return
+    }
+    logger.logFullError(`[handleIssuingCredential] Unexpected message ${JSON.stringify(message)}`)
+  })
+}
+
+async function handlePresentationResult () {
+  const proof = new sdk.protocols.v1_0.PresentProof()
+  handlers.addHandler(proof.msgFamily, proof.msgFamilyVersion, async (msgName, message) => {
+    logger.debug(`[handlePresentationResult] msgName: ${msgName}, message: ${JSON.stringify(message)}`)
+    if (msgName === constants.MessageType.ProblemReport) {
+      logger.logFullError(errorFromMessage(message))
+      return
+    }
+    if (msgName !== proof.msgNames.PRESENTATION_RESULT) {
+      logger.logFullError(`Unexpected message kind: ${msgName}`)
+      return
+    }
+    const threadId = message['~thread'].thid
+    const presentationResult = await models.PresentationResult.findOne({ threadId })
+    if (!presentationResult) {
+      logger.logFullError(`[handlePresentationResults] PresentationResult with threadId ${threadId} not found`)
+      return
+    }
+    presentationResult.data = _.pick(message, ['verification_result', 'requested_presentation'])
+    presentationResult.status = constants.Status.PresentationResult.Ready
+    await presentationResult.save()
+  })
+}
+
+/**
  * Create relationship.
  *
  * @param {String} relationshipName the relationship name
@@ -146,6 +245,7 @@ async function createRelationship (relationshipName) {
       })
     })
   })
+  logger.info('creating Relationship...')
   await relProvisioning.create(context)
   const { relDID, threadId } = await promise01
   // create invitation
@@ -164,50 +264,12 @@ async function createRelationship (relationshipName) {
   })
   await relationship.connectionInvitation(context)
   const inviteURL = await promise02
+  logger.info(`Relationship ${relDID} created`)
   logger.debug(`invite URL: ${inviteURL}`)
   return {
     relDID,
     inviteURL
   }
-}
-
-/**
- * Waiting for a connection.
- *
- * @returns {Object} the result from the operation
- */
-async function waitForConnection () {
-  const connecting = new sdk.protocols.v1_0.Connecting()
-  logger.info('Waiting for connection...')
-  const { connDID, myDID } = await new Promise((resolve, reject) => {
-    handlers.addHandler(connecting.msgFamily, connecting.msgFamilyVersion, async (msgName, message) => {
-      logger.debug(`msgName: ${msgName}, message: ${JSON.stringify(message)}`)
-      if (msgName === constants.MessageType.ProblemReport) {
-        reject(errorFromMessage(message))
-      }
-      if (msgName !== connecting.msgNames.REQUEST_RECEIVED) {
-        reject(new Error(`Unexpected message name: ${msgName}`))
-      }
-      resolve({
-        connDID: message.conn.DID,
-        myDID: message.myDID
-      })
-    })
-  })
-  await new Promise((resolve, reject) => {
-    handlers.addHandler(connecting.msgFamily, connecting.msgFamilyVersion, async (msgName, message) => {
-      logger.debug(`msgName: ${msgName}, message: ${JSON.stringify(message)}`)
-      if (msgName === constants.MessageType.ProblemReport) {
-        reject(errorFromMessage(message))
-      }
-      if (msgName !== connecting.msgNames.RESPONSE_SENT) {
-        reject(new Error(`Unexpected message name: ${msgName}`))
-      }
-      logger.info('Connected')
-      resolve()
-    })
-  })
-  return { connDID, relDID: myDID }
 }
 
 /**
@@ -232,9 +294,10 @@ async function createSchema (schemaName, schemaVersion, schemaAttrs) {
       resolve(message.schemaId)
     })
   })
+  logger.info('creating Schema...')
   await schema.write(context)
   const schemaId = await promise
-  logger.debug(`schema ID: ${schemaId}`)
+  logger.info(`Schema ${schemaId} created`)
   return { schemaId }
 }
 
@@ -260,8 +323,10 @@ async function createCredDefinition (schemaId, definitionName, definitionTag) {
       resolve(message.credDefId)
     })
   })
+  logger.info('creating CredDefinition...')
   await def.write(context)
   const definitionId = await promise
+  logger.info(`CredDefinition ${definitionId} created`)
   return { definitionId }
 }
 
@@ -276,36 +341,9 @@ async function createCredDefinition (schemaId, definitionName, definitionTag) {
  */
 async function issueCredential (relDID, definitionId, credentialData, comment) {
   const issue = new sdk.protocols.v1_0.IssueCredential(relDID, null, definitionId, credentialData, comment, 0, true)
-  // wait for the offer sent
-  const promise = new Promise((resolve, reject) => {
-    handlers.addHandler(issue.msgFamily, issue.msgFamilyVersion, async (msgName, message) => {
-      logger.debug(`msgName: ${msgName}, message: ${JSON.stringify(message)}`)
-      if (msgName === constants.MessageType.ProblemReport) {
-        reject(errorFromMessage(message))
-      }
-      if (msgName !== issue.msgNames.SENT) {
-        reject(new Error(`Unexpected message name: ${msgName}`))
-      }
-      resolve()
-    })
-  })
+  logger.info('offering credential...')
   await issue.offerCredential(context)
-  logger.info('Waiting for user accept the credential...')
-  await promise
-  // wait for the credential sent
-  await new Promise((resolve, reject) => {
-    handlers.addHandler(issue.msgFamily, issue.msgFamilyVersion, async (msgName, message) => {
-      logger.debug(`msgName: ${msgName}, message: ${JSON.stringify(message)}`)
-      if (msgName === constants.MessageType.ProblemReport) {
-        reject(errorFromMessage(message))
-      }
-      if (msgName !== issue.msgNames.SENT) {
-        reject(new Error(`Unexpected message name: ${msgName}`))
-      }
-      resolve()
-    })
-  })
-  logger.info('credential being accepted')
+  return { threadId: issue.threadId }
 }
 
 /**
@@ -315,29 +353,20 @@ async function issueCredential (relDID, definitionId, credentialData, comment) {
  * @returns {undefined}
  */
 async function requestProof (data) {
+  const relationship = await models.Relationship.findOne({ relDID: data.relDID })
+  if (!relationship) {
+    throw new errors.NotFoundError(`relationship with relDID ${data.relDID} not found`)
+  }
   const { relDID, name: proofName, attrs } = data
   const proofAttrs = attrs.map((attr) => ({
     name: attr,
     restrictions: [{ issuer_did: issuerInfo.issuerDID }]
   }))
   const proof = new sdk.protocols.v1_0.PresentProof(relDID, null, proofName, proofAttrs)
-  const promise = new Promise((resolve, reject) => {
-    handlers.addHandler(proof.msgFamily, proof.msgFamilyVersion, async (msgName, message) => {
-      if (msgName === constants.MessageType.ProblemReport) {
-        reject(errorFromMessage(message))
-      }
-      logger.debug(`msgName: ${msgName}, message: ${JSON.stringify(message)}`)
-      if (msgName !== proof.msgNames.PRESENTATION_RESULT) {
-        reject(new Error(`Unexpected message name: ${msgName}`))
-      }
-      resolve(message)
-    })
-  })
+  const result = await models.PresentationResult.create({ ...data, threadId: proof.threadId })
+  logger.info('requesting proof...')
   await proof.request(context)
-  logger.info('Waiting for presentation result...')
-  const result = await promise
-  logger.info('presentation result received')
-  return _.pick(result, ['verification_result', 'requested_presentation'])
+  return result.transform()
 }
 
 requestProof.schema = {
@@ -346,6 +375,24 @@ requestProof.schema = {
     name: Joi.string().required(),
     attrs: Joi.array().items(Joi.string()).required()
   }).required()
+}
+
+/**
+ * Find a presentationResult.
+ *
+ * @param {String} id the id of presentationResult
+ * @returns {Object} the operation result
+ */
+async function getPresentationResult (id) {
+  const result = await models.PresentationResult.findById(id)
+  if (!result) {
+    throw new errors.NotFoundError(`presentationResult with id ${id} not found`)
+  }
+  return result.transform()
+}
+
+getPresentationResult.schema = {
+  id: Joi.string().required()
 }
 
 /**
@@ -360,11 +407,12 @@ async function handleMessage (message) {
 
 module.exports = {
   init,
+  initMessageHandlers,
   createRelationship,
-  waitForConnection,
   createSchema,
   createCredDefinition,
   issueCredential,
   requestProof,
+  getPresentationResult,
   handleMessage
 }

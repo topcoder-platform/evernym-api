@@ -6,7 +6,6 @@ const Joi = require('@hapi/joi')
 const _ = require('lodash')
 const models = require('../models')
 const errors = require('../common/errors')
-const VerityService = require('../services/VerityService')
 const utils = require('../common/utils')
 const joiSchemas = require('../common/joiSchemas')
 
@@ -39,10 +38,19 @@ searchConnections.schema = {
  *
  * @returns {Object} the operation result
  */
-async function createConnection () {
-  const { connDID, relDID } = await VerityService.waitForConnection()
-  const result = await models.Connection.create({ connDID, relDID })
+async function createConnection (data) {
+  const relationship = await models.Relationship.findOne({ relDID: data.relDID })
+  if (!relationship) {
+    throw new errors.NotFoundError(`Relationship with relDID ${data.relDID} does not exist`)
+  }
+  const result = await models.Connection.create(data)
   return result.transform()
+}
+
+createConnection.schema = {
+  data: Joi.object({
+    relDID: Joi.string().required()
+  }).required()
 }
 
 /**

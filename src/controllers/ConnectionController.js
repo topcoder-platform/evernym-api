@@ -26,7 +26,7 @@ async function searchConnections (req, res) {
  * @returns {undefined}
  */
 async function createConnection (req, res) {
-  const result = await ConnectionService.createConnection()
+  const result = await ConnectionService.createConnection(req.body)
   res.status(200).send(result)
 }
 

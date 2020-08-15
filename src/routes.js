@@ -114,5 +114,11 @@ module.exports = {
       controller: 'VerityController',
       method: 'requestProof'
     }
+  },
+  '/verity/presentationResults/:id': {
+    get: {
+      controller: 'VerityController',
+      method: 'getPresentationResult'
+    }
   }
 }

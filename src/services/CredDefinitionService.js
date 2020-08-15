@@ -41,6 +41,10 @@ searchCredDefinitions.schema = {
  * @returns {Object} the operation result
  */
 async function createCredDefinition (data) {
+  const schema = await models.Schema.findOne({ schemaId: data.schemaId })
+  if (!schema) {
+    throw new errors.NotFoundError(`schema with schemaId ${data.schemaId} not found`)
+  }
   const existing = await models.CredDefinition.findOne({ schemaId: data.schemaId, tag: data.tag })
   if (existing) {
     throw new errors.ConflictError(`credDefinition ${data.name}:${data.tag} already exists`)
