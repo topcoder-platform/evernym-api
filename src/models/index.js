@@ -16,7 +16,7 @@ const plugins = {
 }
 
 const connection = mongoose.createConnection(
-  config.MONGO_URI,
+  config.MONGODB_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true

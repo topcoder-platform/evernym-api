@@ -5,7 +5,7 @@
 module.exports = {
   LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
   PORT: process.env.PORT || '3001',
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/test',
+  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
   VERITY_PROVISION_TOKEN: process.env.VERITY_PROVISION_TOKEN,
   VERITY_SERVER_URL: process.env.VERITY_SERVER_URL || 'https://vas.pps.evernym.com',
   VERITY_WEBHOOK_ENDPOINT_URL: process.env.VERITY_WEBHOOK_ENDPOINT_URL,
