@@ -1,8 +1,7 @@
 version: '3'
 
 services:
-  mongo:
-    image: mongo
-    container_name: local-mongo
+  dynamodb:
+    image: amazon/dynamodb-local
     ports:
-      - 27017:27017
+      - "8000:8000"

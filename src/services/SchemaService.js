@@ -3,7 +3,6 @@
  */
 
 const Joi = require('@hapi/joi')
-const _ = require('lodash')
 const models = require('../models')
 const errors = require('../common/errors')
 const VerityService = require('../services/VerityService')
@@ -17,14 +16,8 @@ const joiSchemas = require('../common/joiSchemas')
  * @returns {Object} the info about the searching result
  */
 async function searchSchemas (criteria) {
-  const result = await models.Schema.paginate({}, {
-    offset: utils.calculateOffset(criteria.page, criteria.perPage),
-    limit: criteria.perPage
-  })
-  result.docs = _.map(result.docs, (doc) => {
-    return doc.transform()
-  })
-  return result
+  const result = await models.Schema.scan().all().exec()
+  return utils.pagenateRecords(result, criteria.page, criteria.perPage)
 }
 
 searchSchemas.schema = {
@@ -41,13 +34,13 @@ searchSchemas.schema = {
  * @returns {Object} the operation result
  */
 async function createSchema (data) {
-  const existing = await models.Schema.findOne({ name: data.name, version: data.version })
+  const [existing] = await models.Schema.query({ name: data.name, version: data.version }).exec()
   if (existing) {
     throw new errors.ConflictError(`schema ${data.name}:${data.version} already exists`)
   }
   const { schemaId } = await VerityService.createSchema(data.name, data.version, data.attrs)
-  const result = await models.Schema.create({ schemaId, ...data })
-  return result.transform()
+  const result = await models.Schema.createWithDefaults({ schemaId, ...data })
+  return result
 }
 
 createSchema.schema = {
@@ -65,11 +58,11 @@ createSchema.schema = {
  * @returns {Object} the operation result
  */
 async function getSchema (id) {
-  const result = await models.Schema.findById(id)
+  const result = await models.Schema.get(id)
   if (!result) {
     throw new errors.NotFoundError(`schema with id ${id} not found`)
   }
-  return result.transform()
+  return result
 }
 
 getSchema.schema = {
@@ -83,11 +76,11 @@ getSchema.schema = {
  * @returns {undefined}
  */
 async function deleteSchema (id) {
-  const result = await models.Schema.findById(id)
+  const result = await models.Schema.get(id)
   if (!result) {
     throw new errors.NotFoundError(`schema with id ${id} not found`)
   }
-  await result.delete()
+  await models.Schema.delete(result)
 }
 
 deleteSchema.schema = {

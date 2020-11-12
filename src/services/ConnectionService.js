@@ -3,7 +3,6 @@
  */
 
 const Joi = require('@hapi/joi')
-const _ = require('lodash')
 const models = require('../models')
 const errors = require('../common/errors')
 const utils = require('../common/utils')
@@ -16,14 +15,8 @@ const joiSchemas = require('../common/joiSchemas')
  * @returns {Object} the info about the searching result
  */
 async function searchConnections (criteria) {
-  const result = await models.Connection.paginate({}, {
-    offset: utils.calculateOffset(criteria.page, criteria.perPage),
-    limit: criteria.perPage
-  })
-  result.docs = _.map(result.docs, (doc) => {
-    return doc.transform()
-  })
-  return result
+  const result = await models.Connection.scan().all().exec()
+  return utils.pagenateRecords(result, criteria.page, criteria.perPage)
 }
 
 searchConnections.schema = {
@@ -39,12 +32,12 @@ searchConnections.schema = {
  * @returns {Object} the operation result
  */
 async function createConnection (data) {
-  const relationship = await models.Relationship.findOne({ relDID: data.relDID })
+  const [relationship] = await models.Relationship.query({ relDID: data.relDID }).exec()
   if (!relationship) {
     throw new errors.NotFoundError(`Relationship with relDID ${data.relDID} does not exist`)
   }
-  const result = await models.Connection.create(data)
-  return result.transform()
+  const result = await models.Connection.createWithDefaults(data)
+  return result
 }
 
 createConnection.schema = {
@@ -60,11 +53,11 @@ createConnection.schema = {
  * @returns {Object} the operation result
  */
 async function getConnection (id) {
-  const result = await models.Connection.findById(id)
+  const result = await models.Connection.get(id)
   if (!result) {
     throw new errors.NotFoundError(`connection with id ${id} not found`)
   }
-  return result.transform()
+  return result
 }
 
 getConnection.schema = {
@@ -78,11 +71,11 @@ getConnection.schema = {
  * @returns {undefined}
  */
 async function deleteConnection (id) {
-  const result = await models.Connection.findById(id)
+  const result = await models.Connection.get(id)
   if (!result) {
     throw new errors.NotFoundError(`connection with id ${id} not found`)
   }
-  await result.delete()
+  await models.Connection.delete(result)
 }
 
 deleteConnection.schema = {

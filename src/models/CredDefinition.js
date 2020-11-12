@@ -1,17 +1,46 @@
 /*
- * Mongoose schema for CredDefinition.
+ * Schema for CredDefinition.
  */
 
-const { Schema } = require('mongoose')
+const config = require('config')
+const {
+  Schema
+} = require('dynamoose')
+const uuid = require('uuid')
 
 const schema = new Schema({
-  definitionId: { type: String },
-  schemaId: { type: String },
-  name: { type: String },
-  tag: { type: String },
+  id: {
+    type: String,
+    default: () => uuid.v4(),
+    hashKey: true
+  },
+  definitionId: {
+    type: String,
+    index: {
+      global: true
+    }
+  },
+  schemaId: {
+    type: String,
+    index: {
+      global: true,
+      rangeKey: 'tag'
+    }
+  },
+  tag: {
+    type: String
+  },
+  name: {
+    type: String
+  },
   createdAt: {
     type: Date,
-    default: new Date()
+    default: () => new Date()
+  }
+}, {
+  throughput: {
+    read: Number(config.AMAZON.DYNAMODB_READ_CAPACITY_UNITS),
+    write: Number(config.AMAZON.DYNAMODB_WRITE_CAPACITY_UNITS)
   }
 })
 

@@ -31,7 +31,7 @@ app.use((err, req, res, next) => {
     return
   }
   if (err.name === 'CastError' && err.kind === 'ObjectId') {
-    console.log(err)
+    logger.info(err)
     res.status(400).sendMessage(err.message)
     return
   }
@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(config.PORT, () => {
-  console.log(`APP is listening on ${config.PORT}`)
+  logger.info(`APP is listening on ${config.PORT}`)
   const init = async () => {
     await VerityService.init()
     VerityService.initMessageHandlers()

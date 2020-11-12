@@ -1,0 +1,3920 @@
+{
+	"info": {
+		"_postman_id": "74506573-1c6c-4620-a921-095bc8e311a2",
+		"name": "evernym-api",
+		"description": "API providing basic operations in verity platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "relationships",
+			"item": [
+				{
+					"name": "create Relationship",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ef0aa65-a171-4b4e-8743-baad050a7516",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"relationshipId\",data.id);",
+									"postman.setEnvironmentVariable(\"relDID\",data.relDID);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"rel01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/relationships",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"relationships"
+							]
+						},
+						"description": "Create a relationship."
+					},
+					"response": [
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"rel01\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/relationships",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"rel01\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/relationships",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n \"inviteURL\": \"http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiXSwicm91dGluZ0tleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly93d3cudG9wY29kZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE2LzAxL3RvcGNvZGVyLWxvZ28ucG5nIiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6IjZlOWM1YjA0LWZkNWQtNDIyYi1hZDhlLTFiOGY4YjU5M2I3MyJ9\",\n \"name\": \"rel01\",\n \"id\": \"5f328e7ebab4fd738edb6b6d\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"rel01\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/relationships",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"rel01\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/relationships",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "search Relationships",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/relationships?page=1&perPage=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"relationships"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "The page number."
+								},
+								{
+									"key": "perPage",
+									"value": "20",
+									"description": "The number of items to list per page."
+								}
+							]
+						},
+						"description": "Search all relationships."
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Next-Page",
+									"value": "-56726277",
+									"description": "The index of the next page"
+								},
+								{
+									"key": "X-Page",
+									"value": "-56726277",
+									"description": "The index of the current page (starting at 1)"
+								},
+								{
+									"key": "X-Per-Page",
+									"value": "-56726277",
+									"description": "The number of items to list per page"
+								},
+								{
+									"key": "X-Prev-Page",
+									"value": "-56726277",
+									"description": "The index of the previous page"
+								},
+								{
+									"key": "X-Total",
+									"value": "-56726277",
+									"description": "The total number of items"
+								},
+								{
+									"key": "X-Total-Pages",
+									"value": "-56726277",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Link",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n  \"inviteURL\": \"http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiXSwicm91dGluZ0tleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly93d3cudG9wY29kZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE2LzAxL3RvcGNvZGVyLWxvZ28ucG5nIiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6IjZlOWM1YjA0LWZkNWQtNDIyYi1hZDhlLTFiOGY4YjU5M2I3MyJ9\",\n  \"name\": \"rel01\",\n  \"id\": \"5f328e7ebab4fd738edb6b6d\"\n },\n {\n  \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n  \"inviteURL\": \"http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiXSwicm91dGluZ0tleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly93d3cudG9wY29kZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE2LzAxL3RvcGNvZGVyLWxvZ28ucG5nIiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6IjZlOWM1YjA0LWZkNWQtNDIyYi1hZDhlLTFiOGY4YjU5M2I3MyJ9\",\n  \"name\": \"rel01\",\n  \"id\": \"5f328e7ebab4fd738edb6b6d\"\n }\n]"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Relationship",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/relationships/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"relationships",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{relationshipId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Find a relationship by id."
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n \"inviteURL\": \"http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiXSwicm91dGluZ0tleXMiOlsiN0NMa0FWS25YYUtpNWdzcnVKUFZwMWpZaTdWYm1yb2g1RFVCS2lFZ2NmRFEiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly93d3cudG9wY29kZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE2LzAxL3RvcGNvZGVyLWxvZ28ucG5nIiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6IjZlOWM1YjA0LWZkNWQtNDIyYi1hZDhlLTFiOGY4YjU5M2I3MyJ9\",\n \"name\": \"rel01\",\n \"id\": \"5f328e7ebab4fd738edb6b6d\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Relationship",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/relationships/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"relationships",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{relationshipId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Delete a relationship by id."
+					},
+					"response": [
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "no content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/relationships/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"relationships",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "connections",
+			"item": [
+				{
+					"name": "create Connection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec02301a-a37e-493d-96b2-d6889d4350c8",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"connectionId\",data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"relDID\": \"{{relDID}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/connections",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connections"
+							]
+						},
+						"description": "Create a connection."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"connDID\": \"S8tYPwqVQQ8ND1hFmhVqfB\",\n \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n \"id\": \"5f32a299a15b90434b97ae3e\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "search Connections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/connections?page=1&perPage=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connections"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "The page number."
+								},
+								{
+									"key": "perPage",
+									"value": "20",
+									"description": "The number of items to list per page."
+								}
+							]
+						},
+						"description": "Search all connections."
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Next-Page",
+									"value": "<integer>",
+									"description": "The index of the next page"
+								},
+								{
+									"key": "X-Page",
+									"value": "<integer>",
+									"description": "The index of the current page (starting at 1)"
+								},
+								{
+									"key": "X-Per-Page",
+									"value": "<integer>",
+									"description": "The number of items to list per page"
+								},
+								{
+									"key": "X-Prev-Page",
+									"value": "<integer>",
+									"description": "The index of the previous page"
+								},
+								{
+									"key": "X-Total",
+									"value": "<integer>",
+									"description": "The total number of items"
+								},
+								{
+									"key": "X-Total-Pages",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Link",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"connDID\": \"S8tYPwqVQQ8ND1hFmhVqfB\",\n  \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n  \"id\": \"5f32a299a15b90434b97ae3e\"\n },\n {\n  \"connDID\": \"S8tYPwqVQQ8ND1hFmhVqfB\",\n  \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n  \"id\": \"5f32a299a15b90434b97ae3e\"\n }\n]"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Connection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/connections/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connections",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{connectionId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Find a connection by id."
+					},
+					"response": [
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"connDID\": \"S8tYPwqVQQ8ND1hFmhVqfB\",\n \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n \"id\": \"5f32a299a15b90434b97ae3e\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Connection",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/connections/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connections",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{connectionId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Delete a connection by id."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "no content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/connections/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"connections",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "schemas",
+			"item": [
+				{
+					"name": "create Schema",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5b104c77-64cd-4270-866f-13fd1fd7ea33",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"schemaId\",data.id);",
+									"postman.setEnvironmentVariable(\"schema.schemaId\",data.schemaId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"schema03\",\n  \"version\": \"0.2\",\n  \"attrs\": [\n    \"name\",\n    \"degree\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/schemas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"schemas"
+							]
+						},
+						"description": "Create a schema."
+					},
+					"response": [
+						{
+							"name": "target already exists",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"schema02\",\n    \"version\": \"0.2\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/schemas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"schema02\",\n    \"version\": \"0.2\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/schemas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"schema02\",\n    \"version\": \"0.2\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/schemas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"schema02\",\n    \"version\": \"0.2\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/schemas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n \"name\": \"schema02\",\n \"version\": \"0.2\",\n \"id\": \"5f32a539328e72a59148a31c\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"schema02\",\n    \"version\": \"0.2\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/schemas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "search Schemas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/schemas?page=1&perPage=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"schemas"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "The page number."
+								},
+								{
+									"key": "perPage",
+									"value": "20",
+									"description": "The number of items to list per page."
+								}
+							]
+						},
+						"description": "Search all schemas."
+					},
+					"response": [
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Next-Page",
+									"value": "<integer>",
+									"description": "The index of the next page"
+								},
+								{
+									"key": "X-Page",
+									"value": "<integer>",
+									"description": "The index of the current page (starting at 1)"
+								},
+								{
+									"key": "X-Per-Page",
+									"value": "<integer>",
+									"description": "The number of items to list per page"
+								},
+								{
+									"key": "X-Prev-Page",
+									"value": "<integer>",
+									"description": "The index of the previous page"
+								},
+								{
+									"key": "X-Total",
+									"value": "<integer>",
+									"description": "The total number of items"
+								},
+								{
+									"key": "X-Total-Pages",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Link",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n  \"name\": \"schema02\",\n  \"version\": \"0.2\",\n  \"id\": \"5f32a539328e72a59148a31c\"\n },\n {\n  \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n  \"name\": \"schema02\",\n  \"version\": \"0.2\",\n  \"id\": \"5f32a539328e72a59148a31c\"\n }\n]"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Schema",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/schemas/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"schemas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{schemaId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Find a schema by id."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n \"name\": \"schema02\",\n \"version\": \"0.2\",\n \"id\": \"5f32a539328e72a59148a31c\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Schema",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/schemas/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"schemas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{schemaId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Delete a schema by id."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "no content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/schemas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"schemas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "cred Definitions",
+			"item": [
+				{
+					"name": "create Cred Definition",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dc88ebee-657f-48ce-9e28-bea02e111cda",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"credDefinitionId\",data.id);",
+									"postman.setEnvironmentVariable(\"credDefinition.definitionId\",data.definitionId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"schemaId\": \"{{schema.schemaId}}\",\n  \"name\": \"definition01\",\n  \"tag\": \"latest\"\n}\n"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/credDefinitions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credDefinitions"
+							]
+						},
+						"description": "Create a credDefinition."
+					},
+					"response": [
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n    \"name\": \"definition01\",\n    \"tag\": \"latest\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n    \"name\": \"definition01\",\n    \"tag\": \"latest\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n \"name\": \"definition01\",\n \"tag\": \"latest\",\n \"id\": \"5f32aab2765e7a12484311c0\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n    \"name\": \"definition01\",\n    \"tag\": \"latest\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n    \"name\": \"definition01\",\n    \"tag\": \"latest\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "target already exists",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n    \"name\": \"definition01\",\n    \"tag\": \"latest\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "search Cred Definitions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/credDefinitions?page=1&perPage=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credDefinitions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "The page number."
+								},
+								{
+									"key": "perPage",
+									"value": "20",
+									"description": "The number of items to list per page."
+								}
+							]
+						},
+						"description": "Search all credDefinitions."
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Next-Page",
+									"value": "<integer>",
+									"description": "The index of the next page"
+								},
+								{
+									"key": "X-Page",
+									"value": "<integer>",
+									"description": "The index of the current page (starting at 1)"
+								},
+								{
+									"key": "X-Per-Page",
+									"value": "<integer>",
+									"description": "The number of items to list per page"
+								},
+								{
+									"key": "X-Prev-Page",
+									"value": "<integer>",
+									"description": "The index of the previous page"
+								},
+								{
+									"key": "X-Total",
+									"value": "<integer>",
+									"description": "The total number of items"
+								},
+								{
+									"key": "X-Total-Pages",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Link",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n  \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n  \"name\": \"definition01\",\n  \"tag\": \"latest\",\n  \"id\": \"5f32aab2765e7a12484311c0\"\n },\n {\n  \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n  \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n  \"name\": \"definition01\",\n  \"tag\": \"latest\",\n  \"id\": \"5f32aab2765e7a12484311c0\"\n }\n]"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Cred Definition",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/credDefinitions/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credDefinitions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{credDefinitionId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Find a credDefinition by id."
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n \"schemaId\": \"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\",\n \"name\": \"definition01\",\n \"tag\": \"latest\",\n \"id\": \"5f32aab2765e7a12484311c0\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Cred Definition",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/credDefinitions/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credDefinitions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{credDefinitionId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Delete a credDefinition by id."
+					},
+					"response": [
+						{
+							"name": "no content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credDefinitions/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credDefinitions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "credentials",
+			"item": [
+				{
+					"name": "create Credential",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c016a453-3c71-437f-8c1a-51c7e4bb6d30",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"credentialId\",data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"relDID\": \"{{relDID}}\",\n  \"definitionId\": \"{{credDefinition.definitionId}}\",\n  \"credentialData\": {\n    \"name\": \"John\",\n    \"degree\": \"Bachelors\"\n  },\n  \"comment\": \"comment\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/credentials",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credentials"
+							]
+						},
+						"description": "Create a credential."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n    \"credentialData\": \"<object>\",\n    \"comment\": \"comment\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credentials",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n    \"credentialData\": \"<object>\",\n    \"comment\": \"comment\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credentials",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n \"credentialData\": \"fugia\",\n \"comment\": \"comment\",\n \"id\": \"5f32abda765e7a12484311c1\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n    \"credentialData\": \"<object>\",\n    \"comment\": \"comment\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credentials",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n    \"credentialData\": \"<object>\",\n    \"comment\": \"comment\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/credentials",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "search Credentials",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/credentials?page=1&perPage=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credentials"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "The page number."
+								},
+								{
+									"key": "perPage",
+									"value": "20",
+									"description": "The number of items to list per page."
+								}
+							]
+						},
+						"description": "Search all credentials."
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Next-Page",
+									"value": "<integer>",
+									"description": "The index of the next page"
+								},
+								{
+									"key": "X-Page",
+									"value": "<integer>",
+									"description": "The index of the current page (starting at 1)"
+								},
+								{
+									"key": "X-Per-Page",
+									"value": "<integer>",
+									"description": "The number of items to list per page"
+								},
+								{
+									"key": "X-Prev-Page",
+									"value": "<integer>",
+									"description": "The index of the previous page"
+								},
+								{
+									"key": "X-Total",
+									"value": "<integer>",
+									"description": "The total number of items"
+								},
+								{
+									"key": "X-Total-Pages",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Link",
+									"value": "<integer>",
+									"description": "The total number of pages"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n  \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n  \"credentialData\": \"aliquip Duis est sit\",\n  \"comment\": \"comment\",\n  \"id\": \"5f32abda765e7a12484311c1\"\n },\n {\n  \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n  \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n  \"credentialData\": \"magna\",\n  \"comment\": \"comment\",\n  \"id\": \"5f32abda765e7a12484311c1\"\n }\n]"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials?page=1&perPage=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perPage",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Credential",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/credentials/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credentials",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{credentialId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Find a credential by id."
+					},
+					"response": [
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n \"definitionId\": \"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\",\n \"credentialData\": \"fugia\",\n \"comment\": \"comment\",\n \"id\": \"5f32abda765e7a12484311c1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Credential",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/credentials/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"credentials",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{credentialId}}",
+									"description": "(Required) object Id"
+								}
+							]
+						},
+						"description": "Delete a credential by id."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "no content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/credentials/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"credentials",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "verity",
+			"item": [
+				{
+					"name": "request Proof",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f648c429-f2b2-405a-9290-4a89464e25ee",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"presentationResultId\",data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"relDID\": \"{{relDID}}\",\n  \"name\": \"proof01\",\n  \"attrs\": [\n    \"name\",\n    \"degree\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/verity/requestProof",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"verity",
+								"requestProof"
+							]
+						},
+						"description": "Request proof from Connect.Me."
+					},
+					"response": [
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"{\\n  \\\"requested_presentation\\\": {\\n    \\\"identifiers\\\": [\\n      {\\n        \\\"cred_def_id\\\": \\\"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\\\",\\n        \\\"schema_id\\\": \\\"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\\\"\\n      }\\n    ],\\n    \\\"predicates\\\": {},\\n    \\\"revealed_attrs\\\": {\\n      \\\"degree\\\": {\\n        \\\"identifier_index\\\": 0,\\n        \\\"value\\\": \\\"Bachelors\\\"\\n      },\\n      \\\"name\\\": {\\n        \\\"identifier_index\\\": 0,\\n        \\\"value\\\": \\\"John\\\"\\n      }\\n    },\\n    \\\"self_attested_attrs\\\": {},\\n    \\\"unrevealed_attrs\\\": {}\\n  },\\n  \\\"verification_result\\\": \\\"ProofValidated\\\"\\n}\\n\""
+						}
+					]
+				},
+				{
+					"name": "get presentationResult",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/verity/presentationResults/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"verity",
+								"presentationResults",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{presentationResultId}}"
+								}
+							]
+						},
+						"description": "Request proof from Connect.Me."
+					},
+					"response": [
+						{
+							"name": "internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "resource not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"message\": \"paria\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"relDID\": \"CNJMAUh5xf8AHEqxeMnQcR\",\n    \"name\": \"proof01\",\n    \"attrs\": [\n        \"name\",\n        \"degree\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/verity/requestProof",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"verity",
+										"requestProof"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"{\\n  \\\"requested_presentation\\\": {\\n    \\\"identifiers\\\": [\\n      {\\n        \\\"cred_def_id\\\": \\\"BThsiu7s8BMMvEonohm5uD:3:CL:132559:latest\\\",\\n        \\\"schema_id\\\": \\\"BThsiu7s8BMMvEonohm5uD:2:schema02:0.2\\\"\\n      }\\n    ],\\n    \\\"predicates\\\": {},\\n    \\\"revealed_attrs\\\": {\\n      \\\"degree\\\": {\\n        \\\"identifier_index\\\": 0,\\n        \\\"value\\\": \\\"Bachelors\\\"\\n      },\\n      \\\"name\\\": {\\n        \\\"identifier_index\\\": 0,\\n        \\\"value\\\": \\\"John\\\"\\n      }\\n    },\\n    \\\"self_attested_attrs\\\": {},\\n    \\\"unrevealed_attrs\\\": {}\\n  },\\n  \\\"verification_result\\\": \\\"ProofValidated\\\"\\n}\\n\""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"variable": [
+		{
+			"id": "baseUrl",
+			"key": "baseUrl",
+			"value": "/",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
