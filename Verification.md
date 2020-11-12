@@ -38,202 +38,155 @@ Execute the `create RelationShip` request in Postman.
 The response body should look like:
 
 ``` json
-{
-    "createdAt": "2020-08-11T22:31:49.051Z",
-    "relDID": "6bTxtm7oxFJnMR1onvRQqm",
-    "inviteURL": "http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiNDNxeVlOTEdNeXdzM2E3YWc0VVZuY3FSNDRoV0FqMnVCVmd5dloxTnFSY1QiXSwicm91dGluZ0tleXMiOlsiNDNxeVlOTEdNeXdzM2E3YWc0VVZuY3FSNDRoV0FqMnVCVmd5dloxTnFSY1QiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly93d3cudG9wY29kZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE2LzAxL3RvcGNvZGVyLWxvZ28ucG5nIiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6ImY5NmI3ZTk2LTg5ZGItNDkzMi1hMTZkLTIzN2RkZWFjZjYzOSJ9",
+
+    "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
+    "inviteURL": "http://vas.pps.evernym.com:80/agency/msg?c_i=eyJsYWJlbCI6InJlbDAxIiwic2VydmljZUVuZHBvaW50IjoiaHR0cDovL3Zhcy5wcHMuZXZlcm55bS5jb206ODAvYWdlbmN5L21zZyIsInJlY2lwaWVudEtleXMiOlsiRGU3RjhZZ1FmNzhCdWZaUGplZWdTdDFoYzRNM0xxVnFwcnlNWmdzbVZ6V2kiXSwicm91dGluZ0tleXMiOlsiRGU3RjhZZ1FmNzhCdWZaUGplZWdTdDFoYzRNM0xxVnFwcnlNWmdzbVZ6V2kiLCJFeFBGTHg0dU5qRjlqUlFKVjdYeEF0OE1mdVhKRU5nYmdBMXFObVd6bnNSWiJdLCJwcm9maWxlVXJsIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvMjM0IiwiQHR5cGUiOiJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsIkBpZCI6ImQ5ZTJjMzI4LWM2MDUtNGNiMC1iNzY2LWE2YjJkOWI3YmYzMiJ9",
     "name": "rel01",
-    "id": "5f3320af07bb709e59bb803f"
+    "id": "533e7959-e5ac-4aaa-901b-077d64085a5e",
+    "createdAt": "2020-11-12T07:48:08.395Z"
 }
 ```
 
 Go to a text-to-qrcode website(e.g. https://www.the-qrcode-generator.com/) and convert the value of `inviteURL` to QR code.
 
 ## Create a connection
-Go to the request body of the `create Connection` request in Postman and
-replace the value of relDID with the one from Create a relationship.
-Execute the request.
+Execute the `create Connection` request in Postman.
 The response body should look like:
 
 ``` json
 {
+    "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
+    "id": "1ea15950-7d3d-49da-9846-91d778735bb8",
     "status": "pending",
-    "relDID": "QZ8JhKK29WPFGFkZx5ee4w",
-    "createdAt": "2020-08-15T02:44:09.800Z",
-    "updatedAt": "2020-08-15T02:44:09.800Z",
-    "id": "5f374bf90e998b1d7c893229"
+    "createdAt": "2020-11-12T07:51:53.745Z",
+    "updatedAt": "2020-11-12T07:51:53.745Z"
 }
 ```
-
-The value of `id` will be used in the next request.
 
 You can now scan the QR code with Connect.Me to start a connection.
-After the connection is established, execute the `get Connection` request with the value of `id` from previous request.
+After the connection is established, execute the `get Connection` request.
 The response body should look like:
 
 ``` json
 {
+    "createdAt": "2020-11-12T07:51:53.745Z",
+    "id": "1ea15950-7d3d-49da-9846-91d778735bb8",
+    "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
     "status": "active",
-    "relDID": "QZ8JhKK29WPFGFkZx5ee4w",
-    "createdAt": "2020-08-15T02:44:09.800Z",
-    "updatedAt": "2020-08-15T02:51:55.753Z",
-    "id": "5f374bf90e998b1d7c893229"
+    "updatedAt": "2020-11-12T07:52:53.699Z"
 }
 ```
 
-Notice that the value of the status is changed to "active".
-
-## Write a schema to Ledger
-Execute the `create Schema` request in Postman.
-The response body should look like:
-
-``` json
-{
-    "createdAt": "2020-08-11T23:23:33.495Z",
-    "schemaId": "7hW8w9NNUZ5p523bCcFPGt:2:schema02:0.2",
-    "name": "schema02",
-    "version": "0.2",
-    "id": "5f3329e1938099682eaa55e7"
-}
-```
-
-The schemaId will be used in the next step.
-
-## Write a credential definition to Ledger
-Go to the request body of the `create CredDefinition` request in Postman and
-replace the value of schemaId with the one from last step.
-
-Execute the request.
-The response body should look like:
-
-``` json
-{
-    "createdAt": "2020-08-11T23:23:33.493Z",
-    "definitionId": "7hW8w9NNUZ5p523bCcFPGt:3:CL:132864:latest",
-    "id": "5f332a9a938099682eaa55e8",
-    "name": "definition01",
-    "schemaId": "7hW8w9NNUZ5p523bCcFPGt:2:schema02:0.2",
-    "tag": "latest"
-}
-```
-
-The definitionId will be used in the next step.
+Notice the value of the status is changed to "active".
 
 ## Issue a credential
-Go to the request body of the `create Credential` request in Postman and,
+- Write a schema to Ledger by executing the `create Schema` request in Postman.
+- Write a credential definition to Ledger by executing the `create CredDefinition` request in Postman.
+- Execute the `create Credential` request in Postman.
+  The response body should look like:
 
-- replace the value of relDID with the one from Create a relationship.
-- replace the value of definitionId with the one from Write a credential definition to Ledger.
+  ``` json
+  {
+      "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
+      "definitionId": "T51WZZbsAbbfY4xfR9vhmw:3:CL:160435:latest",
+      "credentialData": {
+          "name": "John",
+          "degree": "Bachelors"
+      },
+      "comment": "comment",
+      "threadId": "adbe3e6e-43c7-4f97-92bc-e4cf677e79a5",
+      "id": "96661743-7359-44d4-9b8b-257965b233fa",
+      "status": "pending",
+      "createdAt": "2020-11-12T08:07:34.522Z",
+      "updatedAt": "2020-11-12T08:07:34.522Z"
+  }
+  ```
 
-Execute the request.
-The response body should look like:
+  You will receive a message in your Connect.Me app. Accept it.
+  After the credential is issued to you, execute the `get Credential` request.
+  The response body should look like:
 
-``` json
-{
-    "status": "pending",
-    "relDID": "6bTxtm7oxFJnMR1onvRQqm",
-    "definitionId": "7hW8w9NNUZ5p523bCcFPGt:3:CL:132864:latest",
-    "credentialData": {
-        "name": "John",
-        "degree": "Bachelors"
-    },
-    "comment": "comment",
-    "threadId": "84aad637-4c62-458a-913a-c9857a1978f3",
-    "createdAt": "2020-08-15T02:56:04.447Z",
-    "updatedAt": "2020-08-15T02:56:04.447Z",
-    "id": "5f374ec40e998b1d7c89322a"
-}
-```
+  ``` json
+  {
+      "threadId": "adbe3e6e-43c7-4f97-92bc-e4cf677e79a5",
+      "createdAt": "2020-11-12T08:07:34.522Z",
+      "comment": "comment",
+      "credentialData": {
+          "name": "John",
+          "degree": "Bachelors"
+      },
+      "id": "96661743-7359-44d4-9b8b-257965b233fa",
+      "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
+      "definitionId": "T51WZZbsAbbfY4xfR9vhmw:3:CL:160435:latest",
+      "status": "accepted",
+      "updatedAt": "2020-11-12T08:08:04.990Z"
+  }
+  ```
 
-The value of `id` will be used in the next request.
-
-You can now accept the credential with Connect.Me.
-After the credential is issued to you, execute the `get Credential` request with the value of `id` from previous request.
-The response body should look like:
-
-``` json
-{
-    "status": "accepted",
-    "relDID": "QZ8JhKK29WPFGFkZx5ee4w",
-    "definitionId": "9YLRtP7FJgWifeANJ5uKmu:3:CL:134293:latest",
-    "credentialData": {
-        "name": "John",
-        "degree": "Bachelors"
-    },
-    "comment": "comment",
-    "threadId": "5246dd95-6e01-4794-b238-f9a05db319e9",
-    "createdAt": "2020-08-15T03:04:10.527Z",
-    "updatedAt": "2020-08-15T03:04:28.271Z",
-    "id": "5f3750aa0e998b1d7c893230"
-}
-```
-
-Notice that the value of the status is changed to "accepted".
+  Notice the value of the status is changed to "accepted".
 
 ## Request proof
-Go to the request body of the `request Proof` request in Postman and
-replace the value of relDID with the one from Create a relationship.
-
-Execute the request.
+Execute the `request Proof` request in Postman.
 The response body should look like:
 
 ``` json
 {
+    "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
+    "name": "proof01",
     "attrs": [
         "name",
         "degree"
     ],
+    "threadId": "8723e11d-cb52-4797-b5c0-0eed9ab03bdf",
+    "id": "660275ac-4160-40e7-9752-abc50649bdb6",
     "status": "pending",
-    "relDID": "QZ8JhKK29WPFGFkZx5ee4w",
-    "name": "proof01",
-    "threadId": "708c7604-d51b-4a77-b528-5e805b11a759",
-    "createdAt": "2020-08-15T03:07:56.758Z",
-    "updatedAt": "2020-08-15T03:07:56.758Z",
-    "id": "5f37518c0e998b1d7c893231"
+    "createdAt": "2020-11-12T08:20:57.168Z",
+    "updatedAt": "2020-11-12T08:20:57.168Z"
 }
 ```
 
-The value of `id` will be used in the next request.
-
-You can now send your proof with Connect.Me.
-After the the presentation result is sent, execute the `get presentationResult` request with the value of `id` from previous request.
+You will receive a message in your Connect.Me app. Send your proof.
+After the presentation result is sent, execute the `get presentationResult` request.
 The response body should look like:
 
 ``` json
 {
+    "threadId": "8723e11d-cb52-4797-b5c0-0eed9ab03bdf",
+    "createdAt": "2020-11-12T08:20:57.168Z",
+    "data": {
+        "requested_presentation": {
+            "predicates": {},
+            "revealed_attrs": {
+                "degree": {
+                    "identifier_index": 0,
+                    "value": "Bachelors"
+                },
+                "name": {
+                    "identifier_index": 0,
+                    "value": "John"
+                }
+            },
+            "self_attested_attrs": {},
+            "unrevealed_attrs": {},
+            "identifiers": [
+                {
+                    "schema_id": "T51WZZbsAbbfY4xfR9vhmw:2:schema03:0.2",
+                    "cred_def_id": "T51WZZbsAbbfY4xfR9vhmw:3:CL:160435:latest"
+                }
+            ]
+        },
+        "verification_result": "ProofValidated"
+    },
+    "name": "proof01",
+    "id": "660275ac-4160-40e7-9752-abc50649bdb6",
+    "relDID": "QC4vxHYqtzxAaMQ1gUXcFh",
     "attrs": [
         "name",
         "degree"
     ],
     "status": "ready",
-    "relDID": "QZ8JhKK29WPFGFkZx5ee4w",
-    "name": "proof01",
-    "threadId": "708c7604-d51b-4a77-b528-5e805b11a759",
-    "createdAt": "2020-08-15T03:07:56.758Z",
-    "updatedAt": "2020-08-15T03:11:37.912Z",
-    "data": {
-        "verification_result": "ProofValidated",
-        "requested_presentation": {
-            "revealed_attrs": {
-                "name": {
-                    "identifier_index": 0,
-                    "value": "John"
-                },
-                "degree": {
-                    "identifier_index": 0,
-                    "value": "Bachelors"
-                }
-            },
-            "identifiers": [
-                {
-                    "schema_id": "9YLRtP7FJgWifeANJ5uKmu:2:schema03:0.2",
-                    "cred_def_id": "9YLRtP7FJgWifeANJ5uKmu:3:CL:134293:latest"
-                }
-            ]
-        }
-    },
-    "id": "5f37518c0e998b1d7c893231"
+    "updatedAt": "2020-11-12T08:23:08.973Z"
 }
 ```
 
-Notice that the value of the status is changed to "active" and new field "data" is attached.
+Notice the value of the status is changed to "ready" and new field "data" is attached.

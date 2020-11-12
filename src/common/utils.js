@@ -199,14 +199,31 @@ function findLocalModules (dir) {
 }
 
 /**
- * Calculate offset from page and per page.
+ * Paginate records fetched from DynamoDB.
  *
+ * @param {Array} records all records
  * @param {Number} page the page number
  * @param {Number} perPage the per page size
- * @returns {Number} the offset
+ * @returns {Object} the pagination object
  */
-function calculateOffset (page, perPage) {
-  return (page - 1) * perPage
+function pagenateRecords (records, page, perPage) {
+  const totalPages = Math.ceil(records.length / perPage)
+  const result = {
+    limit: perPage,
+    page,
+    totalPages,
+    totalDocs: records.length,
+    docs: records.slice((page - 1) * perPage, page * perPage)
+  }
+  if (page > 1) {
+    result.hasPrevPage = true
+    result.prevPage = page - 1
+  }
+  if (page < totalPages) {
+    result.hasNextPage = true
+    result.nextPage = page + 1
+  }
+  return result
 }
 
 module.exports = {
@@ -215,5 +232,5 @@ module.exports = {
   decorateWithValidators,
   setResHeaders,
   findLocalModules,
-  calculateOffset
+  pagenateRecords
 }

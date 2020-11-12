@@ -5,7 +5,17 @@
 module.exports = {
   LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
   PORT: process.env.PORT || '3001',
-  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
+
+  AMAZON: {
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || 'FAKE_ACCESS_KEY',
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || 'FAKE_SECRET_ACCESS_KEY',
+    AWS_REGION: process.env.AWS_REGION || 'us-east-1',
+    IS_LOCAL_DB: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : true,
+    DYNAMODB_URL: process.env.DYNAMODB_URL || 'http://localhost:8000', // it is required if IS_LOCAL_DB is true
+    DYNAMODB_READ_CAPACITY_UNITS: process.env.DYNAMODB_READ_CAPACITY_UNITS || 10,
+    DYNAMODB_WRITE_CAPACITY_UNITS: process.env.DYNAMODB_WRITE_CAPACITY_UNITS || 5
+  },
+
   VERITY_PROVISION_TOKEN: process.env.VERITY_PROVISION_TOKEN,
   VERITY_SERVER_URL: process.env.VERITY_SERVER_URL || 'https://vas.pps.evernym.com',
   VERITY_WEBHOOK_ENDPOINT_URL: process.env.VERITY_WEBHOOK_ENDPOINT_URL,

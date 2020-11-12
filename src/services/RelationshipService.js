@@ -3,7 +3,6 @@
  */
 
 const Joi = require('@hapi/joi')
-const _ = require('lodash')
 const models = require('../models')
 const errors = require('../common/errors')
 const VerityService = require('../services/VerityService')
@@ -17,14 +16,8 @@ const joiSchemas = require('../common/joiSchemas')
  * @returns {Object} the info about the searching result
  */
 async function searchRelationships (criteria) {
-  const result = await models.Relationship.paginate({}, {
-    offset: utils.calculateOffset(criteria.page, criteria.perPage),
-    limit: criteria.perPage
-  })
-  result.docs = _.map(result.docs, (doc) => {
-    return doc.transform()
-  })
-  return result
+  const result = await models.Relationship.scan().all().exec()
+  return utils.pagenateRecords(result, criteria.page, criteria.perPage)
 }
 
 searchRelationships.schema = {
@@ -42,8 +35,8 @@ searchRelationships.schema = {
  */
 async function createRelationship (data) {
   const { relDID, inviteURL } = await VerityService.createRelationship(data.name)
-  const result = await models.Relationship.create({ relDID, inviteURL, ...data })
-  return result.transform()
+  const result = await models.Relationship.createWithDefaults({ relDID, inviteURL, ...data })
+  return result
 }
 
 createRelationship.schema = {
@@ -59,11 +52,11 @@ createRelationship.schema = {
  * @returns {Object} the operation result
  */
 async function getRelationship (id) {
-  const result = await models.Relationship.findById(id)
+  const result = await models.Relationship.get(id)
   if (!result) {
     throw new errors.NotFoundError(`relationship with id ${id} not found`)
   }
-  return result.transform()
+  return result
 }
 
 getRelationship.schema = {
@@ -77,11 +70,11 @@ getRelationship.schema = {
  * @returns {undefined}
  */
 async function deleteRelationship (id) {
-  const result = await models.Relationship.findById(id)
+  const result = await models.Relationship.get(id)
   if (!result) {
     throw new errors.NotFoundError(`relationship with id ${id} not found`)
   }
-  await result.delete()
+  await models.Relationship.delete(result)
 }
 
 deleteRelationship.schema = {

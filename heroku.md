@@ -34,7 +34,10 @@ To set config vars (after creation of app), you can use heroku dashboard (Dashbo
 For Example.
 
 ```
-$ heroku config:set VERITY_WALLET_NAME="mywallet" VERITY_WALLET_KEY="xxx123"
+$ heroku config:set VERITY_WALLET_NAME="mywallet" VERITY_WALLET_KEY="xxx123" \
+AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
+AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
+AWS_REGION=<AWS_REGION> \
 ```
 
 \*\*\* Important: Set the `VERITY_WEBHOOK_ENDPOINT_URL` to heroku app url manually, with the following command
@@ -42,11 +45,3 @@ $ heroku config:set VERITY_WALLET_NAME="mywallet" VERITY_WALLET_KEY="xxx123"
 ```
 $ heroku config:set VERITY_WEBHOOK_ENDPOINT_URL=$(heroku info -s | grep web_url | cut -d= -f2)
 ```
-
-# Mongo
-
-https://elements.heroku.com/addons/mongolab
-
-Please note: mLab has discontinued the MongoDB add-on. Please migrate to a new MongoDB provider before November 10, 2020.
-
-After installing mLab MongoDB, MONGODB_URI env is set automatically

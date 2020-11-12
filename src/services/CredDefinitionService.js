@@ -3,7 +3,6 @@
  */
 
 const Joi = require('@hapi/joi')
-const _ = require('lodash')
 const models = require('../models')
 const errors = require('../common/errors')
 const VerityService = require('../services/VerityService')
@@ -17,14 +16,8 @@ const joiSchemas = require('../common/joiSchemas')
  * @returns {Object} the info about the searching result
  */
 async function searchCredDefinitions (criteria) {
-  const result = await models.CredDefinition.paginate({}, {
-    offset: utils.calculateOffset(criteria.page, criteria.perPage),
-    limit: criteria.perPage
-  })
-  result.docs = _.map(result.docs, (doc) => {
-    return doc.transform()
-  })
-  return result
+  const result = await models.CredDefinition.scan().all().exec()
+  return utils.pagenateRecords(result, criteria.page, criteria.perPage)
 }
 
 searchCredDefinitions.schema = {
@@ -41,17 +34,17 @@ searchCredDefinitions.schema = {
  * @returns {Object} the operation result
  */
 async function createCredDefinition (data) {
-  const schema = await models.Schema.findOne({ schemaId: data.schemaId })
+  const [schema] = await models.Schema.query({ schemaId: data.schemaId }).exec()
   if (!schema) {
     throw new errors.NotFoundError(`schema with schemaId ${data.schemaId} not found`)
   }
-  const existing = await models.CredDefinition.findOne({ schemaId: data.schemaId, tag: data.tag })
+  const [existing] = await models.CredDefinition.query({ schemaId: data.schemaId, tag: data.tag }).exec()
   if (existing) {
     throw new errors.ConflictError(`credDefinition ${data.name}:${data.tag} already exists`)
   }
   const { definitionId } = await VerityService.createCredDefinition(data.schemaId, data.name, data.tag)
-  const result = await models.CredDefinition.create({ definitionId, ...data })
-  return result.transform()
+  const result = await models.CredDefinition.createWithDefaults({ definitionId, ...data })
+  return result
 }
 
 createCredDefinition.schema = {
@@ -69,11 +62,11 @@ createCredDefinition.schema = {
  * @returns {Object} the operation result
  */
 async function getCredDefinition (id) {
-  const result = await models.CredDefinition.findById(id)
+  const result = await models.CredDefinition.get(id)
   if (!result) {
     throw new errors.NotFoundError(`credDefinition with id ${id} not found`)
   }
-  return result.transform()
+  return result
 }
 
 getCredDefinition.schema = {
@@ -87,11 +80,11 @@ getCredDefinition.schema = {
  * @returns {undefined}
  */
 async function deleteCredDefinition (id) {
-  const result = await models.CredDefinition.findById(id)
+  const result = await models.CredDefinition.get(id)
   if (!result) {
     throw new errors.NotFoundError(`credDefinition with id ${id} not found`)
   }
-  await result.delete()
+  await models.CredDefinition.delete(result)
 }
 
 deleteCredDefinition.schema = {

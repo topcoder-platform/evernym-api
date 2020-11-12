@@ -3,7 +3,6 @@
  */
 
 const Joi = require('@hapi/joi')
-const _ = require('lodash')
 const models = require('../models')
 const errors = require('../common/errors')
 const VerityService = require('../services/VerityService')
@@ -17,14 +16,8 @@ const joiSchemas = require('../common/joiSchemas')
  * @returns {Object} the info about the searching result
  */
 async function searchCredentials (criteria) {
-  const result = await models.Credential.paginate({}, {
-    offset: utils.calculateOffset(criteria.page, criteria.perPage),
-    limit: criteria.perPage
-  })
-  result.docs = _.map(result.docs, (doc) => {
-    return doc.transform()
-  })
-  return result
+  const result = await models.Credential.scan().all().exec()
+  return utils.pagenateRecords(result, criteria.page, criteria.perPage)
 }
 
 searchCredentials.schema = {
@@ -41,11 +34,11 @@ searchCredentials.schema = {
  * @returns {Object} the operation result
  */
 async function createCredential (data) {
-  const relationship = await models.Relationship.findOne({ relDID: data.relDID })
+  const relationship = await models.Relationship.query({ relDID: data.relDID }).exec()
   if (!relationship) {
     throw new errors.NotFoundError(`relationship with relDID ${data.relDID} not found`)
   }
-  const credDefinition = await models.CredDefinition.findOne({ definitionId: data.definitionId })
+  const credDefinition = await models.CredDefinition.query({ definitionId: data.definitionId }).exec()
   if (!credDefinition) {
     throw new errors.NotFoundError(`credDefinition with definitionId ${data.definitionId} not found`)
   }
@@ -55,8 +48,8 @@ async function createCredential (data) {
     data.credentialData,
     data.comment
   )
-  const result = await models.Credential.create({ ...data, threadId })
-  return result.transform()
+  const result = await models.Credential.createWithDefaults({ ...data, threadId })
+  return result
 }
 
 createCredential.schema = {
@@ -75,11 +68,11 @@ createCredential.schema = {
  * @returns {Object} the operation result
  */
 async function getCredential (id) {
-  const result = await models.Credential.findById(id)
+  const result = await models.Credential.get(id)
   if (!result) {
     throw new errors.NotFoundError(`credential with id ${id} not found`)
   }
-  return result.transform()
+  return result
 }
 
 getCredential.schema = {
@@ -93,11 +86,11 @@ getCredential.schema = {
  * @returns {undefined}
  */
 async function deleteCredential (id) {
-  const result = await models.Credential.findById(id)
+  const result = await models.Credential.get(id)
   if (!result) {
     throw new errors.NotFoundError(`credential with id ${id} not found`)
   }
-  await result.delete()
+  await models.Credential.delete(result)
 }
 
 deleteCredential.schema = {

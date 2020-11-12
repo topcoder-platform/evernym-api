@@ -150,12 +150,13 @@ function handleConnections () {
     if (msgName !== connecting.msgNames.REQUEST_RECEIVED) {
       return
     }
-    const connection = await models.Connection.findOne({ relDID: message.myDID })
+    const [connection] = await models.Connection.query({ relDID: message.myDID }).exec()
     if (!connection) {
       logger.logFullError(`[handleConnections] Connection with relDID ${message.myDID} not found`)
       return
     }
     connection.status = constants.Status.Connection.Active
+    logger.info(`Connection with relDID ${message.myDID} is active`)
     await connection.save()
   })
 }
@@ -174,7 +175,7 @@ function handleIssuingCredential () {
       return
     }
     const threadId = message['~thread'].thid
-    const credential = await models.Credential.findOne({ threadId })
+    const [credential] = await models.Credential.query({ threadId }).exec()
     if (!credential) {
       logger.logFullError(`[handleIssuingCredential] Credential with threadId ${threadId} not found`)
       return
@@ -210,7 +211,7 @@ async function handlePresentationResult () {
       return
     }
     const threadId = message['~thread'].thid
-    const presentationResult = await models.PresentationResult.findOne({ threadId })
+    const [presentationResult] = await models.PresentationResult.query({ threadId }).exec()
     if (!presentationResult) {
       logger.logFullError(`[handlePresentationResults] PresentationResult with threadId ${threadId} not found`)
       return
@@ -353,7 +354,7 @@ async function issueCredential (relDID, definitionId, credentialData, comment) {
  * @returns {undefined}
  */
 async function requestProof (data) {
-  const relationship = await models.Relationship.findOne({ relDID: data.relDID })
+  const relationship = await models.Relationship.query({ relDID: data.relDID }).exec()
   if (!relationship) {
     throw new errors.NotFoundError(`relationship with relDID ${data.relDID} not found`)
   }
@@ -363,10 +364,10 @@ async function requestProof (data) {
     restrictions: [{ issuer_did: issuerInfo.issuerDID }]
   }))
   const proof = new sdk.protocols.v1_0.PresentProof(relDID, null, proofName, proofAttrs)
-  const result = await models.PresentationResult.create({ ...data, threadId: proof.threadId })
+  const result = await models.PresentationResult.createWithDefaults({ ...data, threadId: proof.threadId })
   logger.info('requesting proof...')
   await proof.request(context)
-  return result.transform()
+  return result
 }
 
 requestProof.schema = {
@@ -384,11 +385,11 @@ requestProof.schema = {
  * @returns {Object} the operation result
  */
 async function getPresentationResult (id) {
-  const result = await models.PresentationResult.findById(id)
+  const result = await models.PresentationResult.get(id)
   if (!result) {
     throw new errors.NotFoundError(`presentationResult with id ${id} not found`)
   }
-  return result.transform()
+  return result
 }
 
 getPresentationResult.schema = {

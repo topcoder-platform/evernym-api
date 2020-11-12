@@ -1,42 +1,71 @@
-/*
- * Models entry.
+/**
+ * Initialize DynamoDB models
  */
 
-const mongoose = require('mongoose')
-const mongoosePaginate = require('mongoose-paginate-v2')
 const config = require('config')
+const dynamoose = require('dynamoose')
 const _ = require('lodash')
-const { findLocalModules } = require('../common/utils')
-const { transformPlugin } = require('../common/mongoosePlugins')
-const logger = require('../common/logger')
+const {
+  findLocalModules
+} = require('../common/utils')
 
-const plugins = {
-  mongoosePaginate,
-  transformPlugin
+const awsConfig = {
+  region: config.AMAZON.AWS_REGION
+}
+if (config.AMAZON.AWS_ACCESS_KEY_ID && config.AMAZON.AWS_SECRET_ACCESS_KEY) {
+  awsConfig.accessKeyId = config.AMAZON.AWS_ACCESS_KEY_ID
+  awsConfig.secretAccessKey = config.AMAZON.AWS_SECRET_ACCESS_KEY
+}
+dynamoose.aws.sdk.config.update(awsConfig)
+
+if (config.AMAZON.IS_LOCAL_DB) {
+  dynamoose.aws.ddb.local(config.AMAZON.DYNAMODB_URL)
 }
 
-const connection = mongoose.createConnection(
-  config.MONGODB_URI,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
-)
+dynamoose.model.defaults.set({
+  create: false,
+  update: false,
+  waitForActive: false
+})
 
-// initilize models
+/**
+ * Currently default values would not be applied to a document immediately
+ * after its instantiation(https://github.com/dynamoose/dynamoose/issues/905).
+ * Here provides a model method to workaround that.
+ *
+ * @param {Object} model the dynamoose model
+ * @returns {undefined}
+ */
+function setCreateWithDefaults (model) {
+  model.methods.set('createWithDefaults', async function (data) {
+    const schema = model.schemas[0]
+    const dataPopulated = {}
+    for (const [propertyName, propertySchema] of Object.entries(schema.schemaObject)) {
+      if (data[propertyName]) {
+        continue
+      }
+      if (!propertySchema.default) {
+        continue
+      }
+      if (typeof propertySchema.default !== 'function') {
+        dataPopulated[propertyName] = propertySchema.default
+        continue
+      }
+      dataPopulated[propertyName] = await propertySchema.default()
+    }
+    return model.create({
+      ...data,
+      ...dataPopulated
+    })
+  })
+}
+
 const models = _.reduce(findLocalModules(__dirname), (result, data, moduleName) => {
   const schema = require(data.path)
-  for (const plugin of Object.values(plugins)) {
-    schema.plugin(plugin)
-  }
-  result[moduleName] = connection.model(moduleName, schema)
+  const model = dynamoose.model(moduleName, schema)
+  setCreateWithDefaults(model)
+  result[moduleName] = model
   return result
 }, {})
-
-// handle connection errors
-connection.on('error', (err) => {
-  logger.logFullError(err)
-  process.exit(1)
-})
 
 module.exports = models
