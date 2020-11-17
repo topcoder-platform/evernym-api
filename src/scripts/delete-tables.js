@@ -2,7 +2,6 @@
  * Create table schemes in database
  */
 
-
 const dynamoose = require('dynamoose')
 const config = require('config')
 const models = require('../models')
