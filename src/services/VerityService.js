@@ -31,14 +31,37 @@ function errorFromMessage (message) {
 }
 
 /**
- * Save context to file.
+ * Save context config to db. Context would be overwritten if already exists.
  *
  * @param {Object} context the Context object
  * @returns {undefined}
  */
-function saveContext (context) {
+async function saveContextConfig (context) {
   logger.debug(`Context: ${JSON.stringify(context.getConfig())}`)
-  fs.writeFileSync(config.VERITY_CONTEXT_PATH, JSON.stringify(context.getConfig()))
+  const [evernymConfig] = await models.Config.scan().exec()
+  if (!evernymConfig) {
+    await models.Config.create({ context: context.getConfig() })
+    return
+  }
+  evernymConfig.context = context.getConfig()
+  await evernymConfig.save()
+}
+
+/**
+ * Try to reuse context config from local file or from db.
+ *
+ * @returns {Buffer} the context buffer
+ */
+async function getContextConfig () {
+  if (fs.existsSync(config.VERITY_CONTEXT_PATH)) {
+    logger.info(`reuse existing context config from ${config.VERITY_CONTEXT_PATH}`)
+    return fs.readFileSync(config.VERITY_CONTEXT_PATH)
+  }
+  const [evernymConfig] = await models.Config.scan().exec()
+  if (evernymConfig) {
+    logger.info('reuse existing context config stored in db')
+    return Buffer.from(JSON.stringify(evernymConfig.context))
+  }
 }
 
 /**
@@ -48,8 +71,9 @@ function saveContext (context) {
  */
 async function init () {
   // initilize context
-  if (!fs.existsSync(config.VERITY_CONTEXT_PATH)) {
-    logger.info('creating context...')
+  const contextConfig = await getContextConfig()
+  if (!contextConfig) {
+    logger.info('No existing context found. Creating context...')
     const basicContext = await sdk.Context.create(config.VERITY_WALLET_NAME, config.VERITY_WALLET_KEY, config.VERITY_SERVER_URL, '')
     if (!config.VERITY_PROVISION_TOKEN) {
       throw new Error('VERITY_PROVISION_TOKEN cannot be empty')
@@ -57,17 +81,16 @@ async function init () {
     const provision = new sdk.protocols.v0_7.Provision(null, config.VERITY_PROVISION_TOKEN)
     context = await provision.provision(basicContext)
     logger.info('context created')
-    saveContext(context)
+    await saveContextConfig(context)
   } else {
-    logger.info(`reuse existing context from ${config.VERITY_CONTEXT_PATH}`)
-    context = await sdk.Context.createWithConfig(fs.readFileSync(config.VERITY_CONTEXT_PATH))
+    context = await sdk.Context.createWithConfig(contextConfig)
   }
   // update webhook endpoint
   if (config.VERITY_WEBHOOK_ENDPOINT_URL && config.VERITY_WEBHOOK_ENDPOINT_URL !== context.endpointUrl) {
     context.endpointUrl = `${config.VERITY_WEBHOOK_ENDPOINT_URL}/verity/webhook`
     await new sdk.protocols.UpdateEndpoint().update(context)
     logger.info('webhook endpoint updated')
-    saveContext(context)
+    saveContextConfig(context)
   }
   // update institution info
   const updateConfigs = new sdk.protocols.UpdateConfigs(config.VERITY_INSTITUTION_NAME, config.VERITY_INSTITUTION_LOGO_URL)

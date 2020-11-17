@@ -13,7 +13,8 @@ module.exports = {
     IS_LOCAL_DB: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : true,
     DYNAMODB_URL: process.env.DYNAMODB_URL || 'http://localhost:8000', // it is required if IS_LOCAL_DB is true
     DYNAMODB_READ_CAPACITY_UNITS: process.env.DYNAMODB_READ_CAPACITY_UNITS || 10,
-    DYNAMODB_WRITE_CAPACITY_UNITS: process.env.DYNAMODB_WRITE_CAPACITY_UNITS || 5
+    DYNAMODB_WRITE_CAPACITY_UNITS: process.env.DYNAMODB_WRITE_CAPACITY_UNITS || 5,
+    TABLE_NAME_PREFIX: process.env.TABLE_NAME_PREFIX || 'Evernym'
   },
 
   VERITY_PROVISION_TOKEN: process.env.VERITY_PROVISION_TOKEN,
