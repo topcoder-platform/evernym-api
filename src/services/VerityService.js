@@ -31,13 +31,16 @@ function errorFromMessage (message) {
 }
 
 /**
- * Save context config to db. Context would be overwritten if already exists.
+ * Save context config to both local file and db. Context would be overwritten if already exists.
  *
  * @param {Object} context the Context object
  * @returns {undefined}
  */
 async function saveContextConfig (context) {
   logger.debug(`Context: ${JSON.stringify(context.getConfig())}`)
+  logger.info('persisting conext config to local file')
+  fs.writeFileSync(config.VERITY_CONTEXT_PATH, JSON.stringify(context.getConfig()))
+  logger.info('persisting conext config to db')
   const [evernymConfig] = await models.Config.scan().exec()
   if (!evernymConfig) {
     await models.Config.create({ context: context.getConfig() })
