@@ -5,3 +5,12 @@ services:
     image: amazon/dynamodb-local
     ports:
       - "8000:8000"
+  s3:
+    image: minio/minio
+    container_name: local-s3
+    ports:
+      - 9000:9000
+    environment:
+      MINIO_ACCESS_KEY: FAKE_ACCESS_KEY
+      MINIO_SECRET_KEY: FAKE_SECRET_ACCESS_KEY
+    command: "server /data"

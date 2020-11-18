@@ -4,6 +4,7 @@
 
 const sdk = require('verity-sdk')
 const request = require('superagent')
+const path = require('path')
 const config = require('config')
 const Joi = require('@hapi/joi')
 const fs = require('fs')
@@ -11,6 +12,7 @@ const _ = require('lodash')
 const models = require('../models')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const utils = require('../common/utils')
 const constants = require('../../constants')
 
 const handlers = new sdk.Handlers()
@@ -68,6 +70,46 @@ async function getContextConfig () {
 }
 
 /**
+ * Save wallet file to S3.
+ *
+ * @returns {undefined}
+ */
+async function saveWallet () {
+  const s3 = utils.getS3Client()
+  logger.info(`uploading wallet file to s3 bucket ${config.AMAZON.S3_BUCKET_WALLET}`)
+  await s3.putObject({
+    Bucket: config.AMAZON.S3_BUCKET_WALLET,
+    Key: constants.VerityWalletFile.Basename,
+    Body: fs.readFileSync(constants.VerityWalletFile.Pathname)
+  }).promise()
+  logger.info(`successfully uploaded wallet file to s3 bucket ${config.AMAZON.S3_BUCKET_WALLET}`)
+}
+
+/**
+ * Fetch the wallet file from s3 to local filesystem.
+ *
+ * @returns {undefined}
+ */
+async function replicateWalletFromS3 () {
+  const s3 = utils.getS3Client()
+  logger.info('downloading wallet file from s3')
+  const stream = s3.getObject({
+    Bucket: config.AMAZON.S3_BUCKET_WALLET,
+    Key: constants.VerityWalletFile.Basename
+  }).createReadStream()
+  const walletFileDirname = path.dirname(constants.VerityWalletFile.Pathname)
+  if (!fs.existsSync(walletFileDirname)) {
+    fs.mkdirSync(path.dirname(constants.VerityWalletFile.Pathname), { recursive: true })
+  }
+  stream.pipe(fs.createWriteStream(constants.VerityWalletFile.Pathname))
+  await new Promise((resolve, reject) => {
+    stream.on('end', () => resolve())
+    stream.on('error', (err) => reject(err))
+  })
+  logger.info('successfully download wallet file to local filesystem')
+}
+
+/**
  * Initilize issuer.
  *
  * @returns {undefined}
@@ -78,6 +120,7 @@ async function init () {
   if (!contextConfig) {
     logger.info('No existing context found. Creating context...')
     const basicContext = await sdk.Context.create(config.VERITY_WALLET_NAME, config.VERITY_WALLET_KEY, config.VERITY_SERVER_URL, '')
+    await saveWallet()
     if (!config.VERITY_PROVISION_TOKEN) {
       throw new Error('VERITY_PROVISION_TOKEN cannot be empty')
     }
@@ -86,6 +129,9 @@ async function init () {
     logger.info('context created')
     await saveContextConfig(context)
   } else {
+    if (!fs.existsSync(constants.VerityWalletFile.Pathname)) {
+      await replicateWalletFromS3()
+    }
     context = await sdk.Context.createWithConfig(contextConfig)
   }
   // update webhook endpoint
