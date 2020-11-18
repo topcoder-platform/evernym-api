@@ -38,6 +38,8 @@ $ heroku config:set VERITY_WALLET_NAME="mywallet" VERITY_WALLET_KEY="xxx123" \
 AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
 AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
 AWS_REGION=<AWS_REGION> \
+IS_LOCAL_DB=false \
+IS_LOCAL_S3=false
 ```
 
 \*\*\* Important: Set the `VERITY_WEBHOOK_ENDPOINT_URL` to heroku app url manually, with the following command

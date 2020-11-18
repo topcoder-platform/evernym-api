@@ -16,7 +16,8 @@ module.exports = {
     DYNAMODB_WRITE_CAPACITY_UNITS: process.env.DYNAMODB_WRITE_CAPACITY_UNITS || 5,
     TABLE_NAME_PREFIX: process.env.TABLE_NAME_PREFIX || '',
     S3_WALLET_BUCKET: process.env.S3_WALLET_BUCKET || 'evernym-poc',
-    IS_LOCAL_S3: process.env.IS_LOCAL_S3 ? process.env.IS_LOCAL_S3 === 'true' : false,
+    IS_LOCAL_S3: process.env.IS_LOCAL_S3 ? process.env.IS_LOCAL_S3 === 'true' : true,
+    S3_ENDPOINT: process.env.S3_ENDPOINT || 'localhost:9000'
   },
   VERITY_PROVISION_TOKEN: process.env.VERITY_PROVISION_TOKEN,
   VERITY_SERVER_URL: process.env.VERITY_SERVER_URL || 'https://vas.pps.evernym.com',

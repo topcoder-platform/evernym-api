@@ -5,24 +5,45 @@
 const config = require('config')
 var AWS = require('aws-sdk');
 const fs = require('fs')
-const logger = require('../common/logger')
+const logger = require('./logger')
+const constants = require('../../constants')
 
-const awsConfig = {
-  region: config.AMAZON.AWS_REGION
-}
-if (config.AMAZON.AWS_ACCESS_KEY_ID && config.AMAZON.AWS_SECRET_ACCESS_KEY) {
-  awsConfig.accessKeyId = config.AMAZON.AWS_ACCESS_KEY_ID
-  awsConfig.secretAccessKey = config.AMAZON.AWS_SECRET_ACCESS_KEY
-}
-AWS.config.update(awsConfig)
+let s3Client
 
-s3 = new AWS.S3({apiVersion: '2006-03-01'})
+/**
+ * Create S3 client.
+ *
+ * @returns {Object} the client
+ */
+function getS3Client () {
+  if (s3Client) {
+    return s3Client
+  }
+  if (config.AMAZON.IS_LOCAL_S3) {
+    logger.debug('using local S3 service')
+    s3Client = new AWS.S3({
+      apiVersion: constants.AMAZON.S3ApiVersion,
+      accessKeyId: config.AMAZON.AWS_ACCESS_KEY_ID,
+      secretAccessKey: config.AMAZON.AWS_SECRET_ACCESS_KEY,
+      s3ForcePathStyle: true,
+      sslEnabled: false,
+      endpoint: config.AMAZON.S3_ENDPOINT
+    })
+    return s3Client
+  }
+  s3Client = new AWS.S3({
+    apiVersion: constants.AMAZON.S3ApiVersion,
+    accessKeyId: config.AMAZON.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AMAZON.AWS_SECRET_ACCESS_KEY,
+  })
+  return s3Client
+}
 
 /**
  * Create wallet bucket
  */
 async function createBucket() {
-    await s3.createBucket({ Bucket: config.AMAZON.S3_WALLET_BUCKET}).promise()
+  await getS3Client().createBucket({ Bucket: config.AMAZON.S3_WALLET_BUCKET}).promise()
 }
 
 
@@ -42,8 +63,9 @@ async function upload(key, filePath) {
     Key: key,
     Body: file
   }
+  logger.info(`Uploading ${filePath} to ${config.AMAZON.S3_WALLET_BUCKET}/${key}`)
   // Upload to S3
-  await s3.upload(params).promise()
+  await getS3Client().upload(params).promise()
 }
 
 /**
@@ -56,11 +78,13 @@ async function download(key, filePath) {
     logger.info('Local S3, skip downloading')
     return
   }
-  const downloadedFile = await s3.getObject({ Bucket: config.AMAZON.S3_WALLET_BUCKET, Key: key }).promise()
+  logger.info(`Downloading ${config.AMAZON.S3_WALLET_BUCKET}/${key} to ${filePath}`)
+  const downloadedFile = await getS3Client().getObject({ Bucket: config.AMAZON.S3_WALLET_BUCKET, Key: key }).promise()
   fs.writeFileSync(filePath, downloadedFile.Body, {mode: 0o644})
 }
 
 module.exports = {
+  getS3Client,
   createBucket,
   upload,
   download
