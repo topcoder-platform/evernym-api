@@ -11,6 +11,7 @@ const _ = require('lodash')
 const models = require('../models')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const s3 = require('../common/s3')
 const constants = require('../../constants')
 
 const handlers = new sdk.Handlers()
@@ -29,6 +30,58 @@ function errorFromMessage (message) {
   }
   return new Error(`cannot not handle the error message:  ${JSON.stringify(message)}`)
 }
+
+/**
+ *
+ * @param {String} walletName the wallet name
+ * @param {String} walletFile the wallet filename
+ * @param {Boolean} createPath if true, make sure the path exists
+ * @returns {String} wallet path
+ */
+function _walletPath(walletName, walletFile, createPath = false) {
+  const homedir = require('os').homedir()
+  const walletPath = require('path').join(homedir, '.indy_client', 'wallet', walletName, walletFile)
+  logger.info(`Wallet path ${walletPath}`)
+  if (createPath) {
+    fs.mkdirSync(require('path').join(homedir, '.indy_client', 'wallet', walletName), {recursive: true, mode: 0o755})
+    logger.info(`path exists ${fs.existsSync(require('path').join(homedir, '.indy_client', 'wallet', walletName))}`)
+  }
+  return walletPath
+}
+
+/**
+ * Save context config to both local file and db. Context would be overwritten if already exists.
+ *
+ * @param {String} walletName the walletName
+ * @returns {undefined}
+ */
+async function saveWalletInS3 (walletName) {
+  logger.debug(`Storing wallet ${walletName}`)
+  await s3.upload(walletName + '/sqlite.db', _walletPath(walletName, 'sqlite.db'))
+  await s3.upload(walletName + '/sqlite.db-shm', _walletPath(walletName, 'sqlite.db-shm'))
+  await s3.upload(walletName + '/sqlite.db-wal', _walletPath(walletName, 'sqlite.db-wal'))
+  logger.info('Uploaded wallet into S3')
+}
+
+/**
+ * Fetch wallet file from S3
+ *
+ * @param {String} walletName the walletName
+ * @returns {undefined}
+ */
+async function getWalletFromS3 (walletName) {
+  logger.debug(`Fetching wallet ${walletName}`)
+  if (fs.existsSync(_walletPath(walletName, 'sqlite.db'))) {
+    logger.info('Wallet exists, skip.')
+    return
+  }
+  // Check existance locally
+  await s3.download(walletName + '/sqlite.db', _walletPath(walletName, 'sqlite.db', true))
+  await s3.download(walletName + '/sqlite.db-shm', _walletPath(walletName, 'sqlite.db-shm'))
+  await s3.download(walletName + '/sqlite.db-wal', _walletPath(walletName, 'sqlite.db-wal'))
+  logger.info('Downloaded wallet from S3')
+}
+
 
 /**
  * Save context config to both local file and db. Context would be overwritten if already exists.
@@ -81,11 +134,13 @@ async function init () {
     if (!config.VERITY_PROVISION_TOKEN) {
       throw new Error('VERITY_PROVISION_TOKEN cannot be empty')
     }
+    await saveWalletInS3(config.VERITY_WALLET_NAME)
     const provision = new sdk.protocols.v0_7.Provision(null, config.VERITY_PROVISION_TOKEN)
     context = await provision.provision(basicContext)
     logger.info('context created')
     await saveContextConfig(context)
   } else {
+    await getWalletFromS3(config.VERITY_WALLET_NAME)
     context = await sdk.Context.createWithConfig(contextConfig)
   }
   // update webhook endpoint
