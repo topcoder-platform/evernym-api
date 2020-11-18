@@ -15,8 +15,8 @@ See [docs/install_libindy.md](./docs/install_libindy.md).
 # Configuration
 All configuration values can be found in `./config/default.js`.
 
-# DynamoDB in Docker
-To run DynamoDB in docker, go to the `./local` folder and execute `docker-compose up`.
+# Local Services
+To run DynamoDB and S3 compatible service in docker, go to the `./local` folder and execute `docker-compose up`.
 
 # Ngrok Setup
 Run `ngrok http 3001`.
@@ -33,7 +33,7 @@ Write down the URL. It will be used in `VERITY_WEBHOOK_ENDPOINT_URL`.
 - Make sure you are using Nodejs v12 and then install deps: `npm install`
 - Lint: `npm run lint`
 - Lint fix: `npm run lint:fix`
-- Run DynamoDB(see [DynamoDB in Docker](#dynamodb-in-docker)).
+- Run DynamoDB and Local S3(see [Local Services](#local-services)).
 - Forward the API via ngrok(see [Ngrok Setup](#ngrok-setup)).
 - Configure `VERITY_PROVISION_TOKEN` and `VERITY_WEBHOOK_ENDPOINT_URL`
 

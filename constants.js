@@ -1,6 +1,8 @@
 /*
  * Constants.
  */
+const config = require('config')
+const path = require('path')
 
 module.exports = {
   JWT: {
@@ -32,5 +34,12 @@ module.exports = {
       Pending: 'pending',
       Ready: 'ready'
     }
+  },
+  AMAZON: {
+    S3ApiVersion: '2006-03-01'
+  },
+  VerityWalletFile: {
+    Basename: 'sqlite.db',
+    Pathname: path.join(require('os').homedir(), '.indy_client', 'wallet', config.VERITY_WALLET_NAME, 'sqlite.db')
   }
 }

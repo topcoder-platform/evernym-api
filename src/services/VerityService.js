@@ -4,6 +4,7 @@
 
 const sdk = require('verity-sdk')
 const request = require('superagent')
+const path = require('path')
 const config = require('config')
 const Joi = require('@hapi/joi')
 const fs = require('fs')
@@ -11,6 +12,7 @@ const _ = require('lodash')
 const models = require('../models')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const utils = require('../common/utils')
 const constants = require('../../constants')
 
 const handlers = new sdk.Handlers()
@@ -31,14 +33,80 @@ function errorFromMessage (message) {
 }
 
 /**
- * Save context to file.
+ * Save context config to both local file and db. Context would be overwritten if already exists.
  *
  * @param {Object} context the Context object
  * @returns {undefined}
  */
-function saveContext (context) {
+async function saveContextConfig (context) {
   logger.debug(`Context: ${JSON.stringify(context.getConfig())}`)
+  logger.info('persisting conext config to local file')
   fs.writeFileSync(config.VERITY_CONTEXT_PATH, JSON.stringify(context.getConfig()))
+  logger.info('persisting conext config to db')
+  const [evernymConfig] = await models.Config.scan().exec()
+  if (!evernymConfig) {
+    await models.Config.create({ context: context.getConfig() })
+    return
+  }
+  evernymConfig.context = context.getConfig()
+  await evernymConfig.save()
+}
+
+/**
+ * Try to reuse context config from local file or from db.
+ *
+ * @returns {Buffer} the context buffer
+ */
+async function getContextConfig () {
+  if (fs.existsSync(config.VERITY_CONTEXT_PATH)) {
+    logger.info(`reuse existing context config from ${config.VERITY_CONTEXT_PATH}`)
+    return fs.readFileSync(config.VERITY_CONTEXT_PATH)
+  }
+  const [evernymConfig] = await models.Config.scan().exec()
+  if (evernymConfig) {
+    logger.info('reuse existing context config stored in db')
+    return Buffer.from(JSON.stringify(evernymConfig.context))
+  }
+}
+
+/**
+ * Save wallet file to S3.
+ *
+ * @returns {undefined}
+ */
+async function saveWallet () {
+  const s3 = utils.getS3Client()
+  logger.info(`uploading wallet file to s3 bucket ${config.AMAZON.S3_BUCKET_WALLET}`)
+  await s3.putObject({
+    Bucket: config.AMAZON.S3_BUCKET_WALLET,
+    Key: constants.VerityWalletFile.Basename,
+    Body: fs.readFileSync(constants.VerityWalletFile.Pathname)
+  }).promise()
+  logger.info(`successfully uploaded wallet file to s3 bucket ${config.AMAZON.S3_BUCKET_WALLET}`)
+}
+
+/**
+ * Fetch the wallet file from s3 to local filesystem.
+ *
+ * @returns {undefined}
+ */
+async function replicateWalletFromS3 () {
+  const s3 = utils.getS3Client()
+  logger.info('downloading wallet file from s3')
+  const stream = s3.getObject({
+    Bucket: config.AMAZON.S3_BUCKET_WALLET,
+    Key: constants.VerityWalletFile.Basename
+  }).createReadStream()
+  const walletFileDirname = path.dirname(constants.VerityWalletFile.Pathname)
+  if (!fs.existsSync(walletFileDirname)) {
+    fs.mkdirSync(path.dirname(constants.VerityWalletFile.Pathname), { recursive: true })
+  }
+  stream.pipe(fs.createWriteStream(constants.VerityWalletFile.Pathname))
+  await new Promise((resolve, reject) => {
+    stream.on('end', () => resolve())
+    stream.on('error', (err) => reject(err))
+  })
+  logger.info('successfully download wallet file to local filesystem')
 }
 
 /**
@@ -48,26 +116,30 @@ function saveContext (context) {
  */
 async function init () {
   // initilize context
-  if (!fs.existsSync(config.VERITY_CONTEXT_PATH)) {
-    logger.info('creating context...')
+  const contextConfig = await getContextConfig()
+  if (!contextConfig) {
+    logger.info('No existing context found. Creating context...')
     const basicContext = await sdk.Context.create(config.VERITY_WALLET_NAME, config.VERITY_WALLET_KEY, config.VERITY_SERVER_URL, '')
+    await saveWallet()
     if (!config.VERITY_PROVISION_TOKEN) {
       throw new Error('VERITY_PROVISION_TOKEN cannot be empty')
     }
     const provision = new sdk.protocols.v0_7.Provision(null, config.VERITY_PROVISION_TOKEN)
     context = await provision.provision(basicContext)
     logger.info('context created')
-    saveContext(context)
+    await saveContextConfig(context)
   } else {
-    logger.info(`reuse existing context from ${config.VERITY_CONTEXT_PATH}`)
-    context = await sdk.Context.createWithConfig(fs.readFileSync(config.VERITY_CONTEXT_PATH))
+    if (!fs.existsSync(constants.VerityWalletFile.Pathname)) {
+      await replicateWalletFromS3()
+    }
+    context = await sdk.Context.createWithConfig(contextConfig)
   }
   // update webhook endpoint
   if (config.VERITY_WEBHOOK_ENDPOINT_URL && config.VERITY_WEBHOOK_ENDPOINT_URL !== context.endpointUrl) {
     context.endpointUrl = `${config.VERITY_WEBHOOK_ENDPOINT_URL}/verity/webhook`
     await new sdk.protocols.UpdateEndpoint().update(context)
     logger.info('webhook endpoint updated')
-    saveContext(context)
+    saveContextConfig(context)
   }
   // update institution info
   const updateConfigs = new sdk.protocols.UpdateConfigs(config.VERITY_INSTITUTION_NAME, config.VERITY_INSTITUTION_LOGO_URL)

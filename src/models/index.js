@@ -62,7 +62,7 @@ function setCreateWithDefaults (model) {
 
 const models = _.reduce(findLocalModules(__dirname), (result, data, moduleName) => {
   const schema = require(data.path)
-  const model = dynamoose.model(moduleName, schema)
+  const model = dynamoose.model(`${config.AMAZON.TABLE_NAME_PREFIX}${moduleName}`, schema)
   setCreateWithDefaults(model)
   result[moduleName] = model
   return result
