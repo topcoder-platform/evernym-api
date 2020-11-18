@@ -9,11 +9,7 @@ const util = require('util')
 const config = require('config')
 const _ = require('lodash')
 const Joi = require('@hapi/joi')
-const AWS = require('aws-sdk')
 const logger = require('./logger')
-const constants = require('../../constants')
-
-let s3Client
 
 /**
  * Wrap async function to standard express function
@@ -230,39 +226,11 @@ function pagenateRecords (records, page, perPage) {
   return result
 }
 
-/**
- * Create S3 client.
- *
- * @returns {Object} the client
- */
-function getS3Client () {
-  if (s3Client) {
-    return s3Client
-  }
-  if (config.AMAZON.IS_LOCAL_S3) {
-    logger.debug('using local S3 service')
-    s3Client = new AWS.S3({
-      apiVersion: constants.AMAZON.S3ApiVersion,
-      accessKeyId: config.AMAZON.AWS_ACCESS_KEY_ID,
-      secretAccessKey: config.AMAZON.AWS_SECRET_ACCESS_KEY,
-      s3ForcePathStyle: true,
-      sslEnabled: false,
-      endpoint: config.AMAZON.S3_ENDPOINT
-    })
-    return s3Client
-  }
-  s3Client = new AWS.S3({
-    apiVersion: constants.AMAZON.S3ApiVersion
-  })
-  return s3Client
-}
-
 module.exports = {
   autoWrapExpress,
   decorateWithLogging,
   decorateWithValidators,
   setResHeaders,
   findLocalModules,
-  pagenateRecords,
-  getS3Client
+  pagenateRecords
 }

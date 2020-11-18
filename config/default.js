@@ -10,16 +10,15 @@ module.exports = {
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || 'FAKE_ACCESS_KEY',
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || 'FAKE_SECRET_ACCESS_KEY',
     AWS_REGION: process.env.AWS_REGION || 'us-east-1',
-    IS_LOCAL_DB: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : true,
+    IS_LOCAL_DB: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : false,
     DYNAMODB_URL: process.env.DYNAMODB_URL || 'http://localhost:8000', // it is required if IS_LOCAL_DB is true
     DYNAMODB_READ_CAPACITY_UNITS: process.env.DYNAMODB_READ_CAPACITY_UNITS || 10,
     DYNAMODB_WRITE_CAPACITY_UNITS: process.env.DYNAMODB_WRITE_CAPACITY_UNITS || 5,
-    TABLE_NAME_PREFIX: process.env.TABLE_NAME_PREFIX || 'Evernym',
-    S3_BUCKET_WALLET: process.env.S3_BUCKET_WALLET || 'evernym-wallet',
+    TABLE_NAME_PREFIX: process.env.TABLE_NAME_PREFIX || '',
+    S3_WALLET_BUCKET: process.env.S3_WALLET_BUCKET || 'evernym-poc',
     IS_LOCAL_S3: process.env.IS_LOCAL_S3 ? process.env.IS_LOCAL_S3 === 'true' : true,
     S3_ENDPOINT: process.env.S3_ENDPOINT || 'localhost:9000'
   },
-
   VERITY_PROVISION_TOKEN: process.env.VERITY_PROVISION_TOKEN,
   VERITY_SERVER_URL: process.env.VERITY_SERVER_URL || 'https://vas.pps.evernym.com',
   VERITY_WEBHOOK_ENDPOINT_URL: process.env.VERITY_WEBHOOK_ENDPOINT_URL,

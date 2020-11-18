@@ -12,7 +12,11 @@ const createTables = async () => {
   const ddb = dynamoose.aws.ddb()
   for (const model of Object.values(models)) {
     const modelTableParams = await model.table.create.request()
-    await ddb.createTable(modelTableParams).promise()
+    try {
+      await ddb.createTable(modelTableParams).promise()
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
