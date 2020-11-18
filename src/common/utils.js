@@ -11,7 +11,6 @@ const _ = require('lodash')
 const Joi = require('@hapi/joi')
 const logger = require('./logger')
 
-
 /**
  * Wrap async function to standard express function
  *

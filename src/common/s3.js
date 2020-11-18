@@ -3,7 +3,7 @@
  */
 
 const config = require('config')
-var AWS = require('aws-sdk');
+var AWS = require('aws-sdk')
 const fs = require('fs')
 const logger = require('./logger')
 const constants = require('../../constants')
@@ -34,7 +34,7 @@ function getS3Client () {
   s3Client = new AWS.S3({
     apiVersion: constants.AMAZON.S3ApiVersion,
     accessKeyId: config.AMAZON.AWS_ACCESS_KEY_ID,
-    secretAccessKey: config.AMAZON.AWS_SECRET_ACCESS_KEY,
+    secretAccessKey: config.AMAZON.AWS_SECRET_ACCESS_KEY
   })
   return s3Client
 }
@@ -42,17 +42,16 @@ function getS3Client () {
 /**
  * Create wallet bucket
  */
-async function createBucket() {
-  await getS3Client().createBucket({ Bucket: config.AMAZON.S3_WALLET_BUCKET}).promise()
+async function createBucket () {
+  await getS3Client().createBucket({ Bucket: config.AMAZON.S3_WALLET_BUCKET }).promise()
 }
-
 
 /**
  * Upload one file to S3
  * @param {String} key The key in S3
  * @param {String} filePath The file path to be uploaded
  */
-async function upload(key, filePath) {
+async function upload (key, filePath) {
   if (config.AMAZON.IS_LOCAL_S3) {
     logger.info('Local S3, skip uploading')
     return
@@ -73,14 +72,14 @@ async function upload(key, filePath) {
  * @param {String} key The key in S3
  * @param {String} filePath The path to store the file
  */
-async function download(key, filePath) {
+async function download (key, filePath) {
   if (config.AMAZON.IS_LOCAL_S3) {
     logger.info('Local S3, skip downloading')
     return
   }
   logger.info(`Downloading ${config.AMAZON.S3_WALLET_BUCKET}/${key} to ${filePath}`)
   const downloadedFile = await getS3Client().getObject({ Bucket: config.AMAZON.S3_WALLET_BUCKET, Key: key }).promise()
-  fs.writeFileSync(filePath, downloadedFile.Body, {mode: 0o644})
+  fs.writeFileSync(filePath, downloadedFile.Body, { mode: 0o644 })
 }
 
 module.exports = {

@@ -32,23 +32,6 @@ function errorFromMessage (message) {
 }
 
 /**
- *
- * @param {String} walletName the wallet name
- * @param {String} walletFile the wallet filename
- * @param {Boolean} createPath if true, make sure the path exists
- * @returns {String} wallet path
- */
-function _walletPath(walletName, walletFile, createPath = false) {
-  const homedir = require('os').homedir()
-  const walletPath = require('path').join(homedir, '.indy_client', 'wallet', walletName, walletFile)
-  logger.info(`Wallet path ${walletPath}`)
-  if (createPath) {
-    logger.info(`path exists ${fs.existsSync(require('path').join(homedir, '.indy_client', 'wallet', walletName))}`)
-  }
-  return walletPath
-}
-
-/**
  * Save context config to both local file and db. Context would be overwritten if already exists.
  *
  */
@@ -73,14 +56,13 @@ async function getWalletFromS3 () {
   // Check exist locally
   if (!fs.existsSync(constants.VerityWalletFile.Pathname)) {
     logger.info('Wallet path does not exist, creating.')
-    fs.mkdirSync(constants.VerityWalletFile.Pathname, {recursive: true, mode: 0o755})
+    fs.mkdirSync(constants.VerityWalletFile.Pathname, { recursive: true, mode: 0o755 })
   }
   await s3.download(config.VERITY_WALLET_NAME + '/' + constants.VerityWalletFile.DbBasename, constants.VerityWalletFile.DbPathname)
   await s3.download(config.VERITY_WALLET_NAME + '/' + constants.VerityWalletFile.ShmBasename, constants.VerityWalletFile.ShmPathname)
   await s3.download(config.VERITY_WALLET_NAME + '/' + constants.VerityWalletFile.WalBasename, constants.VerityWalletFile.WalPathname)
   logger.info('Downloaded wallet from S3')
 }
-
 
 /**
  * Save context config to both local file and db. Context would be overwritten if already exists.
