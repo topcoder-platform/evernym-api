@@ -63,6 +63,15 @@ async function sendNotification (data) {
             title: config.AMAZON.SNS_NOTIFICATION_TITLE,
             body: config.AMAZON.SNS_NOTIFICATION_BODY
           }
+        }),
+        APNS: JSON.stringify({
+          data,
+          aps: {
+            alert: {
+              title: config.AMAZON.SNS_NOTIFICATION_TITLE,
+              body: config.AMAZON.SNS_NOTIFICATION_BODY
+            }
+          }
         })
       }),
       MessageStructure: 'json'

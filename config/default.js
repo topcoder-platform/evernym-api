@@ -19,6 +19,7 @@ module.exports = {
     IS_LOCAL_S3: process.env.IS_LOCAL_S3 ? process.env.IS_LOCAL_S3 === 'true' : true,
     S3_ENDPOINT: process.env.S3_ENDPOINT || 'localhost:9000',
     SNS_PLATFORM_APPLICATION_ANDROID_ARN: process.env.SNS_PLATFORM_APPLICATION_ANDROID_ARN || '',
+    SNS_PLATFORM_APPLICATION_IOS_ARN: process.env.SNS_PLATFORM_APPLICATION_IOS_ARN || '',
     SNS_NOTIFICATION_TITLE: process.env.SNS_NOTIFICATION_TITLE || 'Test title',
     SNS_NOTIFICATION_BODY: process.env.SNS_NOTIFICATION_BODY || 'Test body'
   },

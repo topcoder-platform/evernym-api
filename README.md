@@ -58,12 +58,13 @@ Write down the URL. It will be used in `VERITY_WEBHOOK_ENDPOINT_URL`.
 - Run DynamoDB and Local S3(see [Local Services](#local-services)).
 - Forward the API via ngrok(see [Ngrok Setup](#ngrok-setup)).
 - Follow instruction to setup Google Firebase(see [Google Firebase Setup](#google-firebase-setup)), Amazon SNS(see [Amazon SNS Setup](#amazon-sns-setup)), Example Android App (see [Example Android App Setup](#example-android-app-setup))
-- Configure `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `SNS_PLATFORM_APPLICATION_ANDROID_ARN`, `VERITY_PROVISION_TOKEN` and `VERITY_WEBHOOK_ENDPOINT_URL`. **Important Notes**: you need to use your real AWS credentials since you need to use AWS SNS service, don't use fake credentials.
+- Configure `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `SNS_PLATFORM_APPLICATION_ANDROID_ARN`, `SNS_PLATFORM_APPLICATION_IOS_ARN`, `VERITY_PROVISION_TOKEN` and `VERITY_WEBHOOK_ENDPOINT_URL`. **Important Notes**: you need to use your real AWS credentials since you need to use AWS SNS service, don't use fake credentials.
 
   ``` bash
   export AWS_ACCESS_KEY_ID=<your AWS access key id>
   export AWS_SECRET_ACCESS_KEY=<your AWS secret key>
-  export SNS_PLATFORM_APPLICATION_ANDROID_ARN=<your AWS SNS Platform application ARN>
+  export SNS_PLATFORM_APPLICATION_ANDROID_ARN=<your AWS SNS Platform application Android ARN>
+  export SNS_PLATFORM_APPLICATION_IOS_ARN=<your AWS SNS Platform application IOS ARN>
   export VERITY_PROVISION_TOKEN=<your provision token>
   export VERITY_WEBHOOK_ENDPOINT_URL=<your ngrok url>
   ```
