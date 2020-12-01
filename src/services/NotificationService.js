@@ -28,7 +28,7 @@ async function createSubscriber (data) {
     throw new errors.ConflictError(`Subscriber ${data.token} already exists`)
   }
   let arn = config.AMAZON.SNS_PLATFORM_APPLICATION_ANDROID_ARN
-  if (data.device === "ios") {
+  if (data.device === 'ios') {
     arn = config.AMAZON.SNS_PLATFORM_APPLICATION_IOS_ARN
   }
   const ret = await snsClient.createPlatformEndpoint({
