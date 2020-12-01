@@ -120,5 +120,17 @@ module.exports = {
       controller: 'VerityController',
       method: 'getPresentationResult'
     }
+  },
+  '/subscribe': {
+    post: {
+      controller: 'NotificationController',
+      method: 'createSubscriber'
+    }
+  },
+  '/webhook': {
+    post: {
+      controller: 'NotificationController',
+      method: 'sendNotification'
+    }
   }
 }
