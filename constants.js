@@ -36,7 +36,8 @@ module.exports = {
     }
   },
   AMAZON: {
-    S3ApiVersion: '2006-03-01'
+    S3ApiVersion: '2006-03-01',
+    SNSApiVersion: '2010-03-31'
   },
   VerityWalletFile: {
     DbBasename: 'sqlite.db',

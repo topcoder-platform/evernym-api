@@ -17,7 +17,11 @@ module.exports = {
     TABLE_NAME_PREFIX: process.env.TABLE_NAME_PREFIX || '',
     S3_WALLET_BUCKET: process.env.S3_WALLET_BUCKET || 'evernym-poc',
     IS_LOCAL_S3: process.env.IS_LOCAL_S3 ? process.env.IS_LOCAL_S3 === 'true' : true,
-    S3_ENDPOINT: process.env.S3_ENDPOINT || 'localhost:9000'
+    S3_ENDPOINT: process.env.S3_ENDPOINT || 'localhost:9000',
+    SNS_PLATFORM_APPLICATION_ANDROID_ARN: process.env.SNS_PLATFORM_APPLICATION_ANDROID_ARN || '',
+    SNS_PLATFORM_APPLICATION_IOS_ARN: process.env.SNS_PLATFORM_APPLICATION_IOS_ARN || '',
+    SNS_NOTIFICATION_TITLE: process.env.SNS_NOTIFICATION_TITLE || 'Test title',
+    SNS_NOTIFICATION_BODY: process.env.SNS_NOTIFICATION_BODY || 'Test body'
   },
   VERITY_PROVISION_TOKEN: process.env.VERITY_PROVISION_TOKEN,
   VERITY_SERVER_URL: process.env.VERITY_SERVER_URL || 'https://vas.pps.evernym.com',

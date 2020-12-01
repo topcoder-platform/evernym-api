@@ -190,3 +190,15 @@ The response body should look like:
 ```
 
 Notice the value of the status is changed to "ready" and new field "data" is attached.
+
+## Notification
+
+1. Create subscriber
+You need to first retrieve the token of your app running in your device. Following `README.md`, you emulator is now running an app `Firebase Cloud Messaging`. You need to click `LOT TOKEN` button, check the [screen shot](https://github.com/firebase/quickstart-android/tree/master/messaging#result) for reference. Now in android studio, the token will be logged in logcat, mark it down.
+Update the `token` parameter in request body, execute the `create subscriber` request in postman.
+
+2. Send notification
+Wait for a while after create subscriber. Execute the `send notification` request in postman. Wait for a while and you would find the notification message/data in logcat. Now let the app running in background, and execute the `send notification` request in postman again, system notification should be displayed.
+
+3. Verification video
+https://drive.google.com/file/d/1_ysBni1wR7KSm1pye_0gB9ffrbEw3pAD/view?usp=sharing
