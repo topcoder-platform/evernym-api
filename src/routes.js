@@ -132,5 +132,11 @@ module.exports = {
       controller: 'NotificationController',
       method: 'sendNotification'
     }
+  },
+  '/qr': {
+    get: {
+      controller: 'QRController',
+      method: 'getQR'
+    }
   }
 }
