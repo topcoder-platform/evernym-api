@@ -133,7 +133,7 @@ module.exports = {
       method: 'sendNotification'
     }
   },
-  '/qr': {
+  '/qr/:name': {
     get: {
       controller: 'QRController',
       method: 'getQR'
