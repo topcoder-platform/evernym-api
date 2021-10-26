@@ -26,7 +26,7 @@
     "dynamoose": "^2.3.0",
     "express": "^4.17.1",
     "get-parameter-names": "^0.3.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "superagent": "^6.0.0",
     "uuid": "^8.3.1",
     "verity-sdk": "^0.4.4",
